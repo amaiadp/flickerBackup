@@ -13,6 +13,10 @@ import javax.imageio.ImageIO;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
+import com.flickr4java.flickr.FlickrException;
+import com.flickr4java.flickr.uploader.UploadMetaData;
+import com.flickr4java.flickr.uploader.Uploader;
+
 public class Argazkia {
 
 	private String id;
@@ -21,6 +25,7 @@ public class Argazkia {
 	private String deskribapena;
 	private List<String> etiketak;
 	private ImageIcon thumbnail;
+	private String flickrID;
 	
 	public Argazkia(File f){
 		id = md5Lortu(f);
@@ -111,6 +116,28 @@ public class Argazkia {
 	
 	public ImageIcon getThumbnail() {
 		return thumbnail;
+	}
+	
+	private void setFlickrID(String fID){
+		flickrID = fID;
+	}
+	
+	public String igo(String apikey, String sharedsecret){
+		Uploader up = new Uploader(apikey, sharedsecret);
+		UploadMetaData md = new UploadMetaData();
+		md.setTags(etiketak);
+		md.setDescription(deskribapena);
+		md.setTitle(izena);
+		String id =null;
+		try {
+			id = up.upload(path, md);
+		} catch (FlickrException e) {
+			e.printStackTrace();
+		}
+		if (id!=null){
+			setFlickrID(id);
+		}
+		return id;
 	}
 	
 }
