@@ -9,11 +9,15 @@ import java.util.List;
 import java.util.Properties;
 
 import com.flickr4java.flickr.Flickr;
+import com.flickr4java.flickr.FlickrException;
 import com.flickr4java.flickr.REST;
 import com.flickr4java.flickr.RequestContext;
 import com.flickr4java.flickr.auth.Auth;
 import com.flickr4java.flickr.auth.Permission;
+import com.flickr4java.flickr.photosets.Photoset;
+import com.flickr4java.flickr.photosets.PhotosetsInterface;
 import com.flickr4java.flickr.util.IOUtilities;
+
 
 public class Nagusia {
 
@@ -65,6 +69,8 @@ public class Nagusia {
 		requestContext.setAuth(auth);
 		Flickr.debugRequest = false;
 		Flickr.debugStream = false;
+		apiKey = f.getApiKey();
+		sharedSecret = f.getSharedSecret();
 	}
 	
 	public static Nagusia getInstantzia(){
@@ -87,15 +93,60 @@ public class Nagusia {
 		return igotzekoa;
 	}
 	
-	private boolean badago(Argazkia argazki){
-		return false;
-		//TODO DB
-	}
 	
 	public void argazkiakIgo(){
 		for(Argazkia argazki: igotzekoa){
-			argazki.igo(apiKey, sharedSecret);
+			if(argazki.getFlickrID()==null){
+				String idF = argazki.igo(f.getUploader());
+				System.out.println(idF);
+			}
+			else{
+				argazki.aldatu(f.getPhotosInterface());
+			}
 		}
 		
 	}
+	
+	public void albumeraGehitu(String photosetID, String photoID){
+		PhotosetsInterface psi = f.getPhotosetsInterface();
+		try {
+			psi.addPhoto(photosetID, photoID);
+		} catch (FlickrException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	
+	public void albumaSortu(String titulua, String deskr, String photoID){
+		PhotosetsInterface psi = f.getPhotosetsInterface();
+		try {
+			Photoset ps = psi.create(titulua, deskr, photoID);
+			String psID = ps.getId();
+		} catch (FlickrException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	
+//	public static void main(String[] args) {
+//        try {
+//            Nagusia t = new Nagusia();
+//            t.igotzekoa = new ArrayList<Argazkia>();
+//            Argazkia arg = new Argazkia(new File("/home/zihara/Imágenes/prueba1.png"));
+//            Argazkia arg1 = new Argazkia(new File("/home/zihara/Imágenes/prueba2.png"));
+//            Argazkia arg2 = new Argazkia(new File("/home/zihara/Imágenes/prueba3.png"));
+//            arg.setFlickrID("30670677823");
+//            arg1.setFlickrID("30637833784");
+//            t.igotzekoa.add(arg);
+//            t.igotzekoa.add(arg1);
+//            t.igotzekoa.add(arg2);
+//            t.argazkiakIgo();
+//        
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        System.exit(0);
+//    }
 }

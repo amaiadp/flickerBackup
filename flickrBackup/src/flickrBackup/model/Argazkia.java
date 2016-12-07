@@ -17,6 +17,8 @@ import com.flickr4java.flickr.FlickrException;
 import com.flickr4java.flickr.uploader.UploadMetaData;
 import com.flickr4java.flickr.uploader.Uploader;
 
+import com.flickr4java.flickr.photos.PhotosInterface;
+
 public class Argazkia {
 
 	private String id;
@@ -118,12 +120,26 @@ public class Argazkia {
 		return thumbnail;
 	}
 	
-	private void setFlickrID(String fID){
+	public String getFlickrID(){
+		return flickrID;
+	}
+	
+	public void setFlickrID(String fID){
 		flickrID = fID;
 	}
 	
-	public String igo(String apikey, String sharedsecret){
-		Uploader up = new Uploader(apikey, sharedsecret);
+	public void aldatu(PhotosInterface pi){
+		//etiketak String[] egin EDO horrela utzi
+		String[] et = (String[]) etiketak.toArray();
+		try {
+			pi.addTags(flickrID, et);
+		} catch (FlickrException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public String igo(Uploader up){
 		UploadMetaData md = new UploadMetaData();
 		md.setTags(etiketak);
 		md.setDescription(deskribapena);
@@ -138,6 +154,7 @@ public class Argazkia {
 			setFlickrID(id);
 		}
 		return id;
+		
 	}
 	
 }
