@@ -1,4 +1,4 @@
-package flickBackup.ui;
+package flickrBackup.ui;
 
 import java.awt.BorderLayout;
 
