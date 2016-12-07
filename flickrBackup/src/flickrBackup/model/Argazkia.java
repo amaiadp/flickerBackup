@@ -21,6 +21,13 @@ public class Argazkia {
 	private String deskribapena;
 	private List<String> etiketak;
 	private ImageIcon thumbnail;
+	private Pribatutasuna prib = Pribatutasuna.PRIVACY_LEVEL_NO_FILTER;
+	
+	public static enum Pribatutasuna{
+		PRIVACY_LEVEL_NO_FILTER, PRIVACY_LEVEL_PUBLIC, PRIVACY_LEVEL_FRIENDS, PRIVACY_LEVEL_FAMILY, PRIVACY_LEVEL_FRIENDS_FAMILY, PRIVACY_LEVEL_PRIVATE
+	}
+	
+	
 	
 	public Argazkia(File f){
 		id = md5Lortu(f);
@@ -113,4 +120,64 @@ public class Argazkia {
 		return thumbnail;
 	}
 	
+	
+	public Object getBalioa(int i){
+		Object erantzuna = null;
+		switch (i) {
+		case 0:
+			erantzuna = thumbnail;
+			break;
+		case 1:
+			erantzuna = izena;
+			break;
+		case 2:
+			erantzuna = deskribapena;
+			break;
+		case 3:
+			erantzuna = etiketak;
+			break;
+		case 4:
+			erantzuna = null;
+			break;
+		case 5:
+			erantzuna = prib;
+			break;
+		case 6:
+			erantzuna = null;
+			break;
+		default:
+			break;
+		}
+		
+		return erantzuna;
+	}
+	
+	public void insertElementAt(Object value, int i){
+		switch (i) {
+		case 0:
+			thumbnail = (ImageIcon) value;
+			break;
+		case 1:
+			izena = (String) value;
+			break;
+		case 2:
+			deskribapena = (String) value;
+			break;
+		case 3:
+			etiketak = (List<String>) value;
+			break;
+//		case 4:
+//			erantzuna = null;
+//			break;
+		case 5:
+			prib = (Pribatutasuna) value;
+			break;
+//		case 6:
+//			erantzuna = null;
+//			break;
+		default:
+			break;
+		}
+		
+	}
 }
