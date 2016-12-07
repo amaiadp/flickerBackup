@@ -27,9 +27,7 @@ public class Argazkia {
 	private String deskribapena;
 	private List<String> etiketak;
 	private ImageIcon thumbnail;
-<<<<<<< HEAD
 	private String flickrID;
-=======
 	private Pribatutasuna prib = Pribatutasuna.PRIVACY_LEVEL_NO_FILTER;
 	
 	public static enum Pribatutasuna{
@@ -37,7 +35,6 @@ public class Argazkia {
 	}
 	
 	
->>>>>>> branch 'master' of ssh://git@github.com/amaiadp/flickrBackup.git
 	
 	public Argazkia(File f){
 		id = md5Lortu(f);
@@ -130,7 +127,6 @@ public class Argazkia {
 		return thumbnail;
 	}
 	
-<<<<<<< HEAD
 	public String getFlickrID(){
 		return flickrID;
 	}
@@ -168,7 +164,6 @@ public class Argazkia {
 		
 	}
 	
-=======
 	
 	public Object getBalioa(int i){
 		Object erantzuna = null;
@@ -229,5 +224,4 @@ public class Argazkia {
 		}
 		
 	}
->>>>>>> branch 'master' of ssh://git@github.com/amaiadp/flickrBackup.git
 }
