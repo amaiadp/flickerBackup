@@ -34,7 +34,9 @@ public class Argazkia {
 		PRIVACY_LEVEL_NO_FILTER, PRIVACY_LEVEL_PUBLIC, PRIVACY_LEVEL_FRIENDS, PRIVACY_LEVEL_FAMILY, PRIVACY_LEVEL_FRIENDS_FAMILY, PRIVACY_LEVEL_PRIVATE
 	}
 	
-	
+	public void setPrib(Pribatutasuna pri){
+		prib = pri;
+	}
 	
 	public Argazkia(File f){
 		id = md5Lortu(f);
@@ -146,11 +148,35 @@ public class Argazkia {
 		}
 	}
 	
+	private UploadMetaData pribatutasunaEsleitu(UploadMetaData md){
+		if(prib.equals(Pribatutasuna.PRIVACY_LEVEL_PUBLIC)){
+			md.setPublicFlag(true);
+		}
+		else{
+			//dando por supuesto que siendo Pribatutasuna.PRIVACY_LEVEL_NO_FILTER lo vamos a dar como pribatu
+			md.setPublicFlag(false);
+			if(prib.equals(Pribatutasuna.PRIVACY_LEVEL_FRIENDS_FAMILY)){
+				md.setFriendFlag(true);
+				md.setFamilyFlag(true);
+			}
+			if(prib.equals(Pribatutasuna.PRIVACY_LEVEL_FRIENDS)){
+				md.setFriendFlag(true);
+				md.setFamilyFlag(false);
+			}
+			if(prib.equals(Pribatutasuna.PRIVACY_LEVEL_FAMILY)){
+				md.setFamilyFlag(true);
+				md.setFriendFlag(false);
+			}
+		}
+		return md;
+	}
+	
 	public String igo(Uploader up){
 		UploadMetaData md = new UploadMetaData();
 		md.setTags(etiketak);
 		md.setDescription(deskribapena);
 		md.setTitle(izena);
+		md = pribatutasunaEsleitu(md);
 		String id =null;
 		try {
 			id = up.upload(path, md);

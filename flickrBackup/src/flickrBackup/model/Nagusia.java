@@ -18,6 +18,8 @@ import com.flickr4java.flickr.photosets.Photoset;
 import com.flickr4java.flickr.photosets.PhotosetsInterface;
 import com.flickr4java.flickr.util.IOUtilities;
 
+import flickrBackup.model.Argazkia.Pribatutasuna;
+
 
 public class Nagusia {
 
@@ -93,12 +95,25 @@ public class Nagusia {
 		return igotzekoa;
 	}
 	
+	private String album;
 	
+	private void setAlbum(String a){
+		album = a;
+	}
 	public void argazkiakIgo(){
 		for(Argazkia argazki: igotzekoa){
 			if(argazki.getFlickrID()==null){
 				String idF = argazki.igo(f.getUploader());
-				System.out.println(idF);
+// Esto son todo para pruebas, al igual que el if de arriba
+//				System.out.println(idF);
+//				if (argazki.getIzena().equals("4.png")){
+//					String idPS = albumaSortu("PruebasFrikis", null, idF);
+//					System.out.println(idPS);
+//					setAlbum(idPS);
+//				}
+//				else{
+//					albumeraGehitu(album, idF);
+//				}
 			}
 			else{
 				argazki.aldatu(f.getPhotosInterface());
@@ -118,15 +133,17 @@ public class Nagusia {
 	}
 	
 	
-	public void albumaSortu(String titulua, String deskr, String photoID){
+	public String albumaSortu(String titulua, String deskr, String photoID){
 		PhotosetsInterface psi = f.getPhotosetsInterface();
 		try {
 			Photoset ps = psi.create(titulua, deskr, photoID);
 			String psID = ps.getId();
+			return psID;
 		} catch (FlickrException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		return null;
 	}
 	
 	
@@ -134,11 +151,12 @@ public class Nagusia {
 //        try {
 //            Nagusia t = new Nagusia();
 //            t.igotzekoa = new ArrayList<Argazkia>();
-//            Argazkia arg = new Argazkia(new File("/home/zihara/Imágenes/prueba1.png"));
-//            Argazkia arg1 = new Argazkia(new File("/home/zihara/Imágenes/prueba2.png"));
-//            Argazkia arg2 = new Argazkia(new File("/home/zihara/Imágenes/prueba3.png"));
-//            arg.setFlickrID("30670677823");
-//            arg1.setFlickrID("30637833784");
+//            Argazkia arg = new Argazkia(new File("/home/zihara/Imágenes/4.png"));
+//            Argazkia arg1 = new Argazkia(new File("/home/zihara/Imágenes/5.png"));
+//            Argazkia arg2 = new Argazkia(new File("/home/zihara/Imágenes/6.png"));
+//            arg.setPrib(Pribatutasuna.PRIVACY_LEVEL_PRIVATE);
+//            arg1.setPrib(Pribatutasuna.PRIVACY_LEVEL_FRIENDS);
+//            arg2.setPrib(Pribatutasuna.PRIVACY_LEVEL_FAMILY);
 //            t.igotzekoa.add(arg);
 //            t.igotzekoa.add(arg1);
 //            t.igotzekoa.add(arg2);
