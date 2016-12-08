@@ -95,11 +95,12 @@ public class Nagusia {
 		return igotzekoa;
 	}
 	
-	private String album;
+//	private String album;
+//	
+//	private void setAlbum(String a){
+//		album = a;
+//	}
 	
-	private void setAlbum(String a){
-		album = a;
-	}
 	public void argazkiakIgo(){
 		for(Argazkia argazki: igotzekoa){
 			if(argazki.getFlickrID()==null){
