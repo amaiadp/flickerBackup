@@ -14,7 +14,10 @@ public class NagusiaUI extends JFrame {
 		JTabbedPane tabPanel = new JTabbedPane(2);
 		Igotzekoa igo = new Igotzekoa();
 		igo.sortu();
+		Bistaratu bis = new Bistaratu();
+		bis.sortu();
 		tabPanel.addTab("Igotzeko", igo);
+		tabPanel.addTab("Bistaratu Flickr-eko Argazkiak", bis);
 		getContentPane().add(tabPanel, BorderLayout.CENTER);
 	}
 	

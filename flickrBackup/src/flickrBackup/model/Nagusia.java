@@ -14,6 +14,7 @@ import com.flickr4java.flickr.REST;
 import com.flickr4java.flickr.RequestContext;
 import com.flickr4java.flickr.auth.Auth;
 import com.flickr4java.flickr.auth.Permission;
+import com.flickr4java.flickr.photos.PhotosInterface;
 import com.flickr4java.flickr.photosets.Photoset;
 import com.flickr4java.flickr.photosets.PhotosetsInterface;
 import com.flickr4java.flickr.util.IOUtilities;
@@ -144,6 +145,14 @@ public class Nagusia {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		return null;
+	}
+
+	public ListaArgazki lortuFlicrkekoArgazkiak() {
+		PhotosInterface pi = f.getPhotosInterface();
+		
+		
+		
 		return null;
 	}
 	

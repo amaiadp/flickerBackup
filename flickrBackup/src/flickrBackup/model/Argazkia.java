@@ -30,6 +30,7 @@ public class Argazkia {
 	private String flickrID;
 	private Pribatutasuna prib = Pribatutasuna.PRIVACY_LEVEL_NO_FILTER;
 	
+	
 	public static enum Pribatutasuna{
 		PRIVACY_LEVEL_NO_FILTER, PRIVACY_LEVEL_PUBLIC, PRIVACY_LEVEL_FRIENDS, PRIVACY_LEVEL_FAMILY, PRIVACY_LEVEL_FRIENDS_FAMILY, PRIVACY_LEVEL_PRIVATE
 	}
@@ -49,12 +50,26 @@ public class Argazkia {
 		System.out.println(f);
 		System.out.println(id);
 		System.out.println(izena);
-		System.out.println(etiketak.get(0));
-		
+		System.out.println(etiketak.get(0));	
+	}
+	
+	public Argazkia(String izen, String deskr, List<String> etik, ImageIcon thumb, String iD){
+		izena = izen;
+		deskribapena = deskr; 
+		etiketak = etik;
+		thumbnail = thumb;
+		flickrID = iD;
 	}
 	
 
-
+	public ImageIcon getThumb(){
+		return thumbnail;
+	}
+	
+	public String getPrib(){
+		return prib.toString();
+	}
+	
 	private String md5Lortu(File f){
 		try{
 			MessageDigest md = MessageDigest.getInstance("MD5");
@@ -145,6 +160,21 @@ public class Argazkia {
 		} catch (FlickrException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}
+	}
+	
+	public void setPribatutasuna(Boolean publi, Boolean fri, Boolean fam){
+		if (publi){prib = Pribatutasuna.PRIVACY_LEVEL_PUBLIC;
+		}
+		else{
+			if (fri && fam){prib = Pribatutasuna.PRIVACY_LEVEL_FRIENDS_FAMILY;}
+			else{ 
+				if(fri){prib = Pribatutasuna.PRIVACY_LEVEL_FRIENDS;}
+				else{
+					if(fam){prib = Pribatutasuna.PRIVACY_LEVEL_FAMILY;}
+					else{prib = Pribatutasuna.PRIVACY_LEVEL_PRIVATE;}
+				}
+			}
 		}
 	}
 	
