@@ -13,20 +13,20 @@ public class Bistaratu extends JPanel{
     
     public void sortu(){
         argazkiakLortu();
-        createAndShowGUI();
+//        createAndShowGUI();
     }
 
     private static void createAndShowGUI(){
         JFrame frame = new JFrame("Bistaratu");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        JComponent newContentPane = new Bistaratu();
-        newContentPane.setOpaque(true); 
-        frame.setContentPane(newContentPane);
+//       JComponent newContentPane = new Bistaratu();
+//       newContentPane.setOpaque(true); 
+//       frame.setContentPane(newContentPane);
         frame.pack();
         frame.setVisible(true);
     }
     
-    public void argazkiakLortu(){		
+    public void argazkiakLortu(){
 		model = new BistaratuJT();
 		taula = new JTable(model);
 		taula.setRowHeight(60);
@@ -36,6 +36,7 @@ public class Bistaratu extends JPanel{
 	}
 
     public static void main(String[] args) {
-    	createAndShowGUI();
+    	Bistaratu j = new Bistaratu();
+    	j.sortu();
     }
 }

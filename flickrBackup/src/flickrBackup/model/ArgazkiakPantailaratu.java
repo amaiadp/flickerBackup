@@ -78,7 +78,7 @@ public class ArgazkiakPantailaratu {
 	public ArrayList<Argazkia> preparePhotos() {
 		ArrayList<Argazkia> argkol = new ArrayList<Argazkia>();
 		String userId = properties.getProperty("nsid");
-		// String secret = properties.getProperty("secret");
+		String secret1 = properties.getProperty("secret");
 		PhotosetsInterface photosetsInterface = f.getPhotosetsInterface();
 		Photosets photosets;
 		PhotosInterface pi = f.getPhotosInterface();
@@ -87,15 +87,14 @@ public class ArgazkiakPantailaratu {
 			Argazkia a;
 			for (Photo argazki: argazkiak){
 				if (!badago(argazki.getId())){
-					ids.put(argazki.getId(), null);
-					a = argazkiaSortu(argazki);
-//				saveImage(argazki);
+					Photo arg = pi.getInfo(argazki.getId(), secret1);
+					System.out.println("\t" + "Title: "+arg.getTitle()+" Deskr: "+arg.getDescription()+" Tags: " +arg.getTags().toString());
+					ids.put(arg.getId(), null);
+					a = argazkiaSortu(arg);
 					argkol.add(a);
 				}
 			}
-			
 			photosets = photosetsInterface.getList(userId);
-			
 			Collection<Photoset> bildumak = photosets.getPhotosets();
 
 			for (Photoset photoset : bildumak) {
@@ -103,8 +102,7 @@ public class ArgazkiakPantailaratu {
 				String title = photoset.getTitle();
 				String secret = photoset.getSecret();
 				int photoCount = photoset.getPhotoCount();
-
-				System.out.println("Title:" + title + " Secret:" + secret + " Count:" + photoCount);
+				System.out.println("Title:" + title +" Deskr: " + photoset.getDescription());
 
 				PhotoList<Photo> col;
 				int PHOTOSPERPAGE = 2;
@@ -112,14 +110,15 @@ public class ArgazkiakPantailaratu {
 				if (photoCount % PHOTOSPERPAGE != 0){
 					HOWMANYPAGES++;
 				}
-				System.out.println("Photos per page: " +PHOTOSPERPAGE +", How many pages: " + HOWMANYPAGES);
 				for (int page = 1; page <= HOWMANYPAGES; page++) {
 					col = photosetsInterface.getPhotos(id /* photosetId */, PHOTOSPERPAGE, page);
 					
 					for (Photo argazkia : col) {
 						if (!badago(argazkia.getId())){
-							ids.put(argazkia.getId(), null);
-							a = argazkiaSortu(argazkia);
+							Photo arg = pi.getInfo(argazkia.getId(), secret1);
+							ids.put(arg.getId(), null);
+							System.out.println("\t" + "Title: "+arg.getTitle()+" Deskr: "+arg.getDescription()+" Tags: " +arg.getTags().toString());
+							a = argazkiaSortu(arg);
 //							saveImage(argazkia);
 							argkol.add(a);
 						}
@@ -158,33 +157,12 @@ public class ArgazkiakPantailaratu {
 	private boolean badago(String id){
 		return ids.containsKey(id);
 	}
-	
-	// convert filename to clean filename
-	public static String convertToFileSystemChar(String name) {
-		String erg = "";
-		Matcher m = Pattern.compile("[a-z0-9 _#&@\\[\\(\\)\\]\\-\\.]", Pattern.CASE_INSENSITIVE).matcher(name);
-		while (m.find()) {
-			erg += name.substring(m.start(), m.end());
-		}
-		if (erg.length() > 200) {
-			erg = erg.substring(0, 200);
-			System.out.println("cut filename: " + erg);
-		}
-		return erg;
-	}
 
 	@SuppressWarnings("deprecation")
 	public boolean saveImage(Photo p) {
 		String path = "pics" + File.separator;
-//			String cleanTitle = convertToFileSystemChar(p.getTitle());
-	
 		File largeFile = new File(path + p.getTitle() + p.getId() +'.'+ p.getOriginalFormat());
 		
-//			if (orgFile.exists() || largeFile.exists()) {
-//				System.out.println(p.getTitle() + "\t" + p.getLargeUrl() + " skipped!");
-//				return false;
-//			}
-	
 		try {
 			System.out.println(p.getTitle()+":"+p.getId());
 			Photo nfo = f.getPhotosInterface().getInfo(p.getId(), null);
