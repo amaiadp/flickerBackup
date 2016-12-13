@@ -11,9 +11,11 @@ import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -27,17 +29,19 @@ import flickrBackup.model.Nagusia;
 
 public class Igotzekoa extends JPanel {
 	
-//	private JLabel aukeratu;
+
 	private File karpeta;
-	private JTable taula;
-	private IgotzekoaJT model;
+	private JTable taula =null;
+	private IgotzekoaJT model=null;
 	
 	public void sortu(){
 		this.setLayout(new BorderLayout());
-
+		
+		JPanel goikoJP = new JPanel(new FlowLayout());
 		
 		JButton ireki = new JButton("IREKI");
-		this.add(ireki, BorderLayout.NORTH);
+		this.add(goikoJP, BorderLayout.NORTH);
+		goikoJP.add(ireki);
 		ireki.addActionListener(new ActionListener() {
 			
 			@Override
@@ -56,12 +60,33 @@ public class Igotzekoa extends JPanel {
 			}
 		});
 		
+		JButton igo = new JButton("Igo Argazkiak");
+		goikoJP.add(igo);
+		
+		igo.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (taula != null){
+					int[] indizeak = taula.getSelectedRows();
+					int zenbat = indizeak.length;
+					for (int index : indizeak){
+						 Argazkia a = model.getArgazkia(index);
+					}
+				}
+				else{
+					JOptionPane.showMessageDialog(null,"Ez dago argazkirik hautatuta");
+				}
+				
+			}
+		});
+		
+		
 		JPanel behekoJP = new JPanel(new BorderLayout());
 		
 		
 		JPanel aldaketaJP = new JPanel(new FlowLayout());
 		behekoJP.add(aldaketaJP, BorderLayout.CENTER);
-//		aldaketaJP.setMaximumSize(new Dimension(arg0, arg1));
 		JLabel deskL = new JLabel("Deskribapena");
 		JTextArea deskT = new JTextArea(3,30);
 		JScrollPane deskSP = new JScrollPane(deskT);
@@ -92,23 +117,25 @@ public class Igotzekoa extends JPanel {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				for (int index : taula.getSelectedRows()) {
-					if (!deskT.getText().equals("")){
-						taula.setValueAt(deskT.getText(), index, 2);
+				if (taula != null){
+					for (int index : taula.getSelectedRows()) {
+						if (!deskT.getText().equals("")){
+							taula.setValueAt(deskT.getText(), index, 2);
+						}
+						if (!etikT.getText().equals("")){
+							ArrayList<String> list = new ArrayList<String>();
+							for (String iterable_element : etikT.getText().split("[\\r\\n]+")) {
+								list.add(iterable_element);
+							};
+							taula.setValueAt(list, index, 3);
+						}
+						if(comboBox.getSelectedItem()!=null){
+							taula.setValueAt(comboBox.getSelectedItem(), index, 5);
+						}
 					}
-					if (!etikT.getText().equals("")){
-						ArrayList<String> list = new ArrayList<String>();
-						for (String iterable_element : etikT.getText().split("[\\r\\n]+")) {
-							list.add(iterable_element);
-						};
-						taula.setValueAt(list, index, 3);
-					}
-					if(comboBox.getSelectedItem()!=null){
-						taula.setValueAt(comboBox.getSelectedItem(), index, 5);
-					}
+					comboBox.setSelectedItem(null);
+					model.fireTableStructureChanged();
 				}
-				comboBox.setSelectedItem(null);
-				model.fireTableStructureChanged();
 			}
 		});
 		

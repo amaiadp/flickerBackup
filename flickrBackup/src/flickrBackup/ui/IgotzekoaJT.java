@@ -91,5 +91,8 @@ public class IgotzekoaJT extends AbstractTableModel {
 		
 	}
 	
+	public Argazkia getArgazkia(int i){
+		return this.data.elementAt(i);
+	}
 	
 }
