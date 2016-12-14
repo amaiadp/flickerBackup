@@ -152,6 +152,14 @@ public class Argazkia {
 		flickrID = fID;
 	}
 	
+	public List<Album> getAlbumak(){
+		return albumak;
+	}
+	
+	public void setAlbumak(List<Album> al){
+		albumak = al;
+	}
+	
 	public void aldatu(PhotosInterface pi){
 		//etiketak String[] egin EDO horrela utzi
 		String[] et = (String[]) etiketak.toArray();

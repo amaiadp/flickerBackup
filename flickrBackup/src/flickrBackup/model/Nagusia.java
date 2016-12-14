@@ -17,6 +17,7 @@ import com.flickr4java.flickr.auth.Permission;
 import com.flickr4java.flickr.photos.PhotosInterface;
 import com.flickr4java.flickr.photosets.Photoset;
 import com.flickr4java.flickr.photosets.PhotosetsInterface;
+import com.flickr4java.flickr.uploader.Uploader;
 import com.flickr4java.flickr.util.IOUtilities;
 
 import flickrBackup.model.Argazkia.Pribatutasuna;
@@ -29,7 +30,8 @@ public class Nagusia {
 	
 	static String apiKey;
 	static String sharedSecret;
-	Flickr f;
+	static Flickr f;
+	public static boolean berridatzi;
 	REST rest;
 	RequestContext requestContext;
 	Properties properties = null;
@@ -87,6 +89,13 @@ public class Nagusia {
 		return instantzia;
 	}
 	
+	public static Uploader getUploader(){
+		return f.getUploader();
+	}
+	
+	public static PhotosetsInterface getPhotosetsInterface(){
+		return f.getPhotosetsInterface();
+	}
 	
 	public ArrayList<Argazkia> igotzekoArgazkiakLortu(File pF){
 		igotzekoa= new ArrayList<Argazkia>();
@@ -102,10 +111,10 @@ public class Nagusia {
 //		album = a;
 //	}
 	
-	public void argazkiakIgo(){
-		for(Argazkia argazki: igotzekoa){
-			if(argazki.getFlickrID()==null){
-				String idF = argazki.igo(f.getUploader());
+//	public void argazkiakIgo(){
+//		for(Argazkia argazki: igotzekoa){
+//			if(argazki.getFlickrID()==null){
+//				String idF = argazki.igo(f.getUploader());
 // Esto son todo para pruebas, al igual que el if de arriba
 //				System.out.println(idF);
 //				if (argazki.getIzena().equals("4.png")){
@@ -116,13 +125,13 @@ public class Nagusia {
 //				else{
 //					albumeraGehitu(album, idF);
 //				}
-			}
-			else{
-				argazki.aldatu(f.getPhotosInterface());
-			}
-		}
-		
-	}
+//			}
+//			else{
+//				argazki.aldatu(f.getPhotosInterface());
+//			}
+//		}
+//		
+//	}
 	
 	public void albumeraGehitu(String photosetID, String photoID){
 		PhotosetsInterface psi = f.getPhotosetsInterface();
@@ -145,14 +154,6 @@ public class Nagusia {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return null;
-	}
-
-	public ListaArgazki lortuFlicrkekoArgazkiak() {
-		PhotosInterface pi = f.getPhotosInterface();
-		
-		
-		
 		return null;
 	}
 	
