@@ -29,6 +29,7 @@ public class Argazkia {
 	private ImageIcon thumbnail;
 	private String flickrID;
 	private Pribatutasuna prib = Pribatutasuna.PRIVACY_LEVEL_NO_FILTER;
+	private List<Album> albumak;
 	
 	
 	public static enum Pribatutasuna{
@@ -46,6 +47,7 @@ public class Argazkia {
 		etiketak = new ArrayList<String>();
 		etiketak.add(id);
 		thumbnail = thumbnailLortu(f);
+		flickrID = null;
 		
 		System.out.println(f);
 		System.out.println(id);
@@ -209,7 +211,8 @@ public class Argazkia {
 		return md;
 	}
 	
-	public String igo(Uploader up){
+	private String igo1(){
+		Uploader up = Nagusia.getUploader();
 		UploadMetaData md = new UploadMetaData();
 		md.setTags(etiketak);
 		md.setDescription(deskribapena);
@@ -218,6 +221,13 @@ public class Argazkia {
 		String id =null;
 		try {
 			id = up.upload(path, md);
+			for(Album al: albumak){
+				if(al.existitzenDa()){
+					//if primaryphoto aldatzeko?
+					al.albumeraGehitu(id);
+				}
+				else{al.albumaSortu(id);}
+			}
 		} catch (FlickrException e) {
 			e.printStackTrace();
 		}
@@ -225,7 +235,21 @@ public class Argazkia {
 			setFlickrID(id);
 		}
 		return id;
-		
+	}
+	
+	public String igo(){
+		if(flickrID==null){
+			return igo1();
+		}
+		else{
+			if(Nagusia.berridatzi){
+				return igo1();
+			}
+			else{
+				//llamada al JDialog
+			}
+		}
+		return null;
 	}
 	
 	
