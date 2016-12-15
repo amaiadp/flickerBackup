@@ -157,7 +157,8 @@ public class ArgazkiakPantailaratu {
 	private boolean badago(String id){
 		return ids.containsKey(id);
 	}
-
+	
+	//pics carpeta sortuta egon behar da
 	@SuppressWarnings("deprecation")
 	public boolean saveImage(Photo p) {
 		String path = "pics" + File.separator;

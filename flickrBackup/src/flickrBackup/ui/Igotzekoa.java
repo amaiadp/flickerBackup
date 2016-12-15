@@ -150,6 +150,7 @@ public class Igotzekoa extends JPanel {
 		taula = new JTable(model);
 		taula.setRowHeight(60);
 		taula.setRowMargin(5);
+		taula.getTableHeader().setReorderingAllowed(false);
 		JScrollPane tableContainer = new JScrollPane(taula);
 		this.add(tableContainer, BorderLayout.CENTER);
 
