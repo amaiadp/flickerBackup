@@ -13,7 +13,7 @@ import flickrBackup.model.Argazkia.Pribatutasuna;
 public class IgotzekoaJT extends AbstractTableModel {
 
 	
-	private Vector<Argazkia> data = new Vector<Argazkia>();
+	private Vector<Argazkia> data;
 	private Vector<String> columnNames = new Vector<String>();
 	
 	public IgotzekoaJT(ArrayList<Argazkia> argaz){
@@ -24,9 +24,7 @@ public class IgotzekoaJT extends AbstractTableModel {
 		this.columnNames.add("Album");
 		this.columnNames.add("Pribatutasuna");
 		this.columnNames.add("Badago?");
-		for (Argazkia argazkia : argaz) {
-			data.add(argazkia);
-		}
+		dataAldatu(argaz);
 	}
 	
 	@Override
@@ -93,6 +91,13 @@ public class IgotzekoaJT extends AbstractTableModel {
 	
 	public Argazkia getArgazkia(int i){
 		return this.data.elementAt(i);
+	}
+	
+	public void dataAldatu(ArrayList<Argazkia> argaz){
+		data = new Vector<Argazkia>();
+		for (Argazkia argazkia : argaz) {
+			data.add(argazkia);
+		}
 	}
 	
 }

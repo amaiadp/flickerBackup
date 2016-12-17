@@ -3,6 +3,7 @@ package flickrBackup.ui;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Label;
 import java.awt.List;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -18,6 +19,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JSplitPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
@@ -33,6 +35,10 @@ public class Igotzekoa extends JPanel {
 	private File karpeta;
 	private JTable taula =null;
 	private IgotzekoaJT model=null;
+	private JScrollPane argazkiSP;
+	private JSplitPane splitPane;
+	private JScrollPane aldaketaSP;
+	
 	
 	public void sortu(){
 		this.setLayout(new BorderLayout());
@@ -86,28 +92,30 @@ public class Igotzekoa extends JPanel {
 		
 		
 		JPanel aldaketaJP = new JPanel(new FlowLayout());
-		behekoJP.add(aldaketaJP, BorderLayout.CENTER);
+		aldaketaSP = new JScrollPane(aldaketaJP);
+		
 		JLabel deskL = new JLabel("Deskribapena");
 		JTextArea deskT = new JTextArea(3,30);
-		JScrollPane deskSP = new JScrollPane(deskT);
+		//JScrollPane deskSP = new JScrollPane(deskT);
 		
 
 		JLabel etikL = new JLabel("Etiketak");
 		JTextArea etikT = new JTextArea(3,30);
-		JScrollPane etikSP = new JScrollPane(etikT);
+		//JScrollPane etikSP = new JScrollPane(etikT);
 		
 		JLabel pribL = new JLabel("Pribatutasuna");
-		JComboBox<Pribatutasuna> comboBox = new JComboBox<Pribatutasuna>();
+		JComboBox<Pribatutasuna> pribCB = new JComboBox<Pribatutasuna>();
 		for (Pribatutasuna elem : Pribatutasuna.values()) {
-			comboBox.addItem(elem);
+			pribCB.addItem(elem);
 		}
-		
+		pribCB.setSelectedItem(null);
+
 		aldaketaJP.add(deskL);
-		aldaketaJP.add(deskSP);
+		aldaketaJP.add(deskT);
 		aldaketaJP.add(etikL);
-		aldaketaJP.add(etikSP);
+		aldaketaJP.add(etikT);
 		aldaketaJP.add(pribL);
-		aldaketaJP.add(comboBox);
+		aldaketaJP.add(pribCB);
 		
 		this.add(behekoJP, BorderLayout.SOUTH);
 		
@@ -117,7 +125,7 @@ public class Igotzekoa extends JPanel {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if (taula != null){
+				if (taula != null && taula.getSelectedRows().length > 0){
 					for (int index : taula.getSelectedRows()) {
 						if (!deskT.getText().equals("")){
 							taula.setValueAt(deskT.getText(), index, 2);
@@ -129,12 +137,14 @@ public class Igotzekoa extends JPanel {
 							};
 							taula.setValueAt(list, index, 3);
 						}
-						if(comboBox.getSelectedItem()!=null){
-							taula.setValueAt(comboBox.getSelectedItem(), index, 5);
+						if(pribCB.getSelectedItem()!=null){
+							taula.setValueAt(pribCB.getSelectedItem(), index, 5);
 						}
 					}
-					comboBox.setSelectedItem(null);
 					model.fireTableStructureChanged();
+					pribCB.setSelectedItem(null);
+					etikT.setText(null);
+					deskT.setText(null);
 				}
 			}
 		});
@@ -146,13 +156,36 @@ public class Igotzekoa extends JPanel {
 	public void argazkiakLortu(){
 		Nagusia nL = Nagusia.getInstantzia();
 		ArrayList<Argazkia> igotzeko = nL.igotzekoArgazkiakLortu(karpeta);
-		model = new IgotzekoaJT(igotzeko);
-		taula = new JTable(model);
-		taula.setRowHeight(60);
-		taula.setRowMargin(5);
 		taula.getTableHeader().setReorderingAllowed(false);
-		JScrollPane tableContainer = new JScrollPane(taula);
-		this.add(tableContainer, BorderLayout.CENTER);
+		if (model==null){
+			model = new IgotzekoaJT(igotzeko);
+			taula = new JTable(model);
+			taula.setRowHeight(60);
+			taula.setRowMargin(5);
+			argazkiSP = new JScrollPane(taula);
+		
+	
+			splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
+			
+			splitPane.setTopComponent(argazkiSP);
+			
+			splitPane.setBottomComponent(aldaketaSP);
+			splitPane.setOneTouchExpandable(true);
+			//splitPane.setDividerLocation(150);
+			splitPane.setEnabled(true);
+			splitPane.repaint();
+			Dimension minimumSize = new Dimension(100, 50);
+			aldaketaSP.setMinimumSize(minimumSize);
+			argazkiSP.setMinimumSize(minimumSize);
+			
+			this.add(splitPane, BorderLayout.CENTER);
+		}
+		else{
+			model.dataAldatu(igotzeko);
+			model.fireTableDataChanged();
+		}
+		
+		//this.add(tableContainer, BorderLayout.CENTER);
 
 	}
 	
