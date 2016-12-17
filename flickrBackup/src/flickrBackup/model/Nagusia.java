@@ -7,6 +7,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
+import java.util.Collection;
 
 import com.flickr4java.flickr.Flickr;
 import com.flickr4java.flickr.FlickrException;
@@ -16,10 +17,12 @@ import com.flickr4java.flickr.auth.Auth;
 import com.flickr4java.flickr.auth.Permission;
 import com.flickr4java.flickr.photos.PhotosInterface;
 import com.flickr4java.flickr.photosets.Photoset;
+import com.flickr4java.flickr.photosets.Photosets;
 import com.flickr4java.flickr.photosets.PhotosetsInterface;
 import com.flickr4java.flickr.uploader.Uploader;
 import com.flickr4java.flickr.util.IOUtilities;
 
+import flickrBackup.kudeatzaileak.AlbumakKud;
 import flickrBackup.model.Argazkia.Pribatutasuna;
 
 
@@ -31,7 +34,7 @@ public class Nagusia {
 	static String apiKey;
 	static String sharedSecret;
 	static Flickr f;
-	public static boolean berridatzi;
+	public static Boolean berridatzi = null;
 	REST rest;
 	RequestContext requestContext;
 	Properties properties = null;
@@ -57,11 +60,30 @@ public class Nagusia {
 	
 	
 	private Nagusia() throws IOException{
+	}
+	
+	public static Nagusia getInstantzia(){
+		if (instantzia==null){
+			try {
+				instantzia = new Nagusia();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		return instantzia;
+	}
+	
+	private void flickrSortu(){
 		InputStream in = null;
 		try {
 			in = getClass().getResourceAsStream("/setup.properties");
 			properties = new Properties();
-			properties.load(in);
+			try {
+				properties.load(in);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		} finally {
 			IOUtilities.close(in);
 		}
@@ -78,23 +100,26 @@ public class Nagusia {
 		sharedSecret = f.getSharedSecret();
 	}
 	
-	public static Nagusia getInstantzia(){
-		if (instantzia==null){
-			try {
-				instantzia = new Nagusia();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-		return instantzia;
-	}
 	
-	public static Uploader getUploader(){
+	public Uploader getUploader(){
+		if(f==null){
+			flickrSortu();
+		}
 		return f.getUploader();
 	}
 	
-	public static PhotosetsInterface getPhotosetsInterface(){
+	public PhotosetsInterface getPhotosetsInterface(){
+		if(f==null){
+			flickrSortu();
+		}
 		return f.getPhotosetsInterface();
+	}
+	
+	public PhotosInterface getPhotosInterface(){
+		if(f==null){
+			flickrSortu();
+		}
+		return f.getPhotosInterface();
 	}
 	
 	public ArrayList<Argazkia> igotzekoArgazkiakLortu(File pF){
@@ -155,6 +180,27 @@ public class Nagusia {
 			e.printStackTrace();
 		}
 		return null;
+	}
+	
+	private void albumakLortu(){
+		PhotosetsInterface pi = getPhotosetsInterface();
+		try {
+			Photosets ps = pi.getList(properties.getProperty("nsid"));
+			Collection<Photoset> cps = ps.getPhotosets();
+			for(Photoset p: cps){
+				AlbumakKud alkud = AlbumakKud.getInstantzia();
+				String id = p.getId();
+				if(!alkud.DBandago(id)){
+					Photoset pset = pi.getInfo(p.getId());
+					alkud.albumaSartu(pset.getId(), pset.getTitle(), pset.getDescription(), pset.getOwner().getRealName());
+				}
+				
+			}
+		} catch (FlickrException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 	
 	
