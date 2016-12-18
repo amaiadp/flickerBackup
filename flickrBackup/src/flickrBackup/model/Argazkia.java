@@ -224,27 +224,20 @@ public class Argazkia {
 	}
 	
 	
-	private void informazioaAldatu(){
+	
+	private void ezabatu(){
 		PhotosInterface pi = Nagusia.getInstantzia().getPhotosInterface();
 		try {
-			pi.setMeta(flickrID, izena, deskribapena);
-			String[] etik = lortuTags();
-			pi.setTags(flickrID,etik);
+			pi.delete(flickrID);
+			ArgazkiakKud argkud = ArgazkiakKud.getInstantzia();
+			argkud.argazkiaEzabatu(id,Nagusia.getInstantzia().getProperty("username"),etiketak);
+			flickrID = null;
+			
 		} catch (FlickrException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
-	
-//	private void ezabatu(){
-//		PhotosInterface pi = Nagusia.getInstantzia().getPhotosInterface();
-//		try {
-//			pi.delete(flickrID);
-//		} catch (FlickrException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//	}
 	
 	private void igo1(){
 		Uploader up = Nagusia.getInstantzia().getUploader();
@@ -261,13 +254,14 @@ public class Argazkia {
 				System.out.println(getIzena()+":Lo ha subido");
 				setFlickrID(idF);
 				ArgazkiakKud argkud = ArgazkiakKud.getInstantzia();
-				argkud.argazkiaSartu(getId(),getIzena(),getDeskribapena(),getPrib(),getFlickrID(),Nagusia.getInstantzia().getProperty("username"));
+				argkud.argazkiaSartu(id,izena,deskribapena,getPrib(),flickrID,Nagusia.getInstantzia().getProperty("username"));
+				argkud.etiketakSartu(id,etiketak,Nagusia.getInstantzia().getProperty("username"));
+				if (albumak!=null){
+					albumak.argazkiaSartu(id,idF);
+				}
 			}
 			else{
 				System.out.println(getIzena()+":EZ TEU IGON");
-			}
-			if (albumak!=null){
-				albumak.argazkiaSartu(idF);
 			}
 		} catch (FlickrException e) {
 			e.printStackTrace();
@@ -281,12 +275,15 @@ public class Argazkia {
 			igo1();
 		}
 		else{
-			if(Nagusia.berridatzi){
-				informazioaAldatu();
-			}
-			else{if(Nagusia.berridatzi==null){
+			if(Nagusia.berridatzi==null){
 				//llamada al JDialog
+				
 			}
+			else{
+				if(Nagusia.berridatzi){
+					ezabatu();
+					igo1();
+				}
 			}
 		}
 	}

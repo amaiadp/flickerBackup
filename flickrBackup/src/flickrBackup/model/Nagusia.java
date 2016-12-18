@@ -52,9 +52,9 @@ public class Nagusia {
 
 	static final String[] EXTENSIONS = new String[]{
 	        "jpeg", "jpg", "gif", "png", "bmp"// and other formats you need
-	    };
+	};
 	
-	 public static final FilenameFilter IMAGE_FILTER = new FilenameFilter() {
+	public static final FilenameFilter IMAGE_FILTER = new FilenameFilter() {
 
 	        @Override
 	        public boolean accept(final File dir, final String name) {
@@ -66,8 +66,6 @@ public class Nagusia {
 	            return (false);
 	        }
 	    };
-	
-	
 	
 	private Nagusia() throws IOException{
 	}
@@ -125,6 +123,13 @@ public class Nagusia {
 		return f.getPhotosetsInterface();
 	}
 	
+	public Flickr getFlickr(){
+		if(f==null){
+			flickrSortu();
+		}
+		return f;
+	}
+	
 	public PhotosInterface getPhotosInterface(){
 		if(f==null){
 			flickrSortu();
@@ -172,49 +177,7 @@ public class Nagusia {
 //		
 //	}
 	
-	public void albumeraGehitu(String photosetID, String photoID){
-		PhotosetsInterface psi = f.getPhotosetsInterface();
-		try {
-			psi.addPhoto(photosetID, photoID);
-		} catch (FlickrException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-
-	public String albumaSortu(String titulua, String deskr, String photoID){
-		PhotosetsInterface psi = f.getPhotosetsInterface();
-		try {
-			Photoset ps = psi.create(titulua, deskr, photoID);
-			String psID = ps.getId();
-			return psID;
-		} catch (FlickrException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return null;
-	}
 	
-	private void albumakLortu(){
-		PhotosetsInterface pi = getPhotosetsInterface();
-		try {
-			Photosets ps = pi.getList(properties.getProperty("nsid"));
-			Collection<Photoset> cps = ps.getPhotosets();
-			for(Photoset p: cps){
-				AlbumakKud alkud = AlbumakKud.getInstantzia();
-				String id = p.getId();
-				if(!alkud.DBandago(id)){
-					Photoset pset = pi.getInfo(p.getId());
-					alkud.albumaSartu(pset.getId(), pset.getTitle(), pset.getDescription(), pset.getOwner().getRealName());
-				}
-
-			}
-		} catch (FlickrException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-	}
 
 	private void propertiesFitxategiaBete(List<String[]> datuak){
 		Properties properties = new Properties();

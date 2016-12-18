@@ -5,27 +5,27 @@ import com.flickr4java.flickr.photos.PhotoContext;
 import com.flickr4java.flickr.photosets.Photoset;
 import com.flickr4java.flickr.photosets.PhotosetsInterface;
 
+import flickrBackup.kudeatzaileak.AlbumakKud;
+
 public class Album {
 	
 	String id;
 	String izena;
 	String deskribapena;
-	String primaryPhotoID;
 	PhotosetsInterface pi;
 	
 	
-	public Album(String izen, String deskr){
+	public Album(String izen, String deskr,String idF){
 		pi = Nagusia.getInstantzia().getPhotosetsInterface();
 		izena = izen;
 		deskribapena = deskr;
-		primaryPhotoID = null;
-		id = null;
+		id = idF;
 	}
 	
+	
 	public boolean albumaSortu(String photoID){
-		primaryPhotoID = photoID;
 		try {
-			Photoset p = pi.create(izena, deskribapena, primaryPhotoID);
+			Photoset p = pi.create(izena, deskribapena, photoID);
 			id = p.getId();
 			return true;
 		} catch (FlickrException e) {
@@ -35,9 +35,11 @@ public class Album {
 		return false;
 	}
 	
-	private boolean albumeraGehitu(String photoID){
+	private boolean albumeraGehitu(String md5,String photoID){
 		try {
 			pi.addPhoto(id, photoID);
+			AlbumakKud albkud = AlbumakKud.getInstantzia();
+			albkud.albumeraGehitu(md5,id, Nagusia.getInstantzia().getProperty("username"));
 			return true;
 		} catch (FlickrException e) {
 			// TODO Auto-generated catch block
@@ -62,20 +64,15 @@ public class Album {
 		return(id!=null);
 	}
 
-	public void sartu(String idPhoto) {
-		if (!badago(idPhoto)){
-			albumeraGehitu(idPhoto);
+	public void sartu(String md5,String idPhoto) {
+		if (!badago(md5)){
+			albumeraGehitu(md5,idPhoto);
 		}
 	}
 
-	private boolean badago(String idPhoto) {
-		try {
-			pi.getContext(idPhoto, id);
-			return true;
-		} catch (FlickrException e) {
-			// TODO Auto-generated catch block
-			return false;
-		}
+	private boolean badago(String md5) {
+		AlbumakKud albkud = AlbumakKud.getInstantzia();
+		return albkud.badago(md5,id,Nagusia.getInstantzia().getProperty("username"));
 	}
 	
 //	public static void main(String[] args) {

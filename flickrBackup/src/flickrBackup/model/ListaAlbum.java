@@ -10,10 +10,15 @@ public class ListaAlbum {
 		lista = new ArrayList<Album>();
 	}
 	
-	public void argazkiaSartu(String id) {
+	public void argazkiaSartu(String md5, String idF) {
 		for(Album al:lista){
-			al.sartu(id);
+			al.sartu(md5, idF);
 		}
+		
+	}
+
+	public void add(Album album) {
+		add(album);
 		
 	}
 }

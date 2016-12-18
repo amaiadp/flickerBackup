@@ -34,38 +34,19 @@ import flickrBackup.kudeatzaileak.ArgazkiakKud;
 
 public class ArgazkiakPantailaratu {
 
-	static String apiKey;
-
-	static String sharedSecret;
-
+	String apiKey;
+	String sharedSecret;
+	String userid;
 	Flickr f;
-
 	REST rest;
-
 	RequestContext requestContext;
-
-	Properties properties = null;
-	
 	HashMap<String, String> ids = new HashMap<String,String>();
 
 	public ArgazkiakPantailaratu() throws IOException {
-		InputStream in = null;
-		try {
-			in = new FileInputStream("src/setup.properties");
-			properties = new Properties();
-			properties.load(in);
-		} finally {
-			IOUtilities.close(in);
-		}
-		f = new Flickr(properties.getProperty("apiKey"), properties.getProperty("secret"), new REST());
-		requestContext = RequestContext.getRequestContext();
-		Auth auth = new Auth();
-		auth.setPermission(Permission.READ);
-		auth.setToken(properties.getProperty("token"));
-		auth.setTokenSecret(properties.getProperty("tokensecret"));
-		requestContext.setAuth(auth);
-		Flickr.debugRequest = false;
-		Flickr.debugStream = false;
+		f = Nagusia.getInstantzia().getFlickr();
+		apiKey = Nagusia.getInstantzia().getProperty("apikey");
+		sharedSecret = Nagusia.getInstantzia().getProperty("secret");
+		userid = Nagusia.getInstantzia().getProperty("nsid");
 	}
 
 	public static void main(String[] args) {
@@ -88,8 +69,8 @@ public class ArgazkiakPantailaratu {
 
 	public ArrayList<Argazkia> preparePhotos() {
 		ArrayList<Argazkia> argkol = new ArrayList<Argazkia>();
-		String userId = properties.getProperty("nsid");
-		String secret1 = properties.getProperty("secret");
+		String userId = userid;
+		String secret1 = sharedSecret;
 		PhotosetsInterface photosetsInterface = f.getPhotosetsInterface();
 		Photosets photosets;
 		PhotosInterface pi = f.getPhotosInterface();

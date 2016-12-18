@@ -42,7 +42,7 @@ public class ArgazkiakKud {
 
 	public List<Object[]> argazkiakLortu(String username) {
 		DBKudeatzaile dbkud = DBKudeatzaile.getInstantzia();
-		ResultSet rs = dbkud.execSQL("SELECT md5,izena,deskribapena,pribatutasuna FROM argazki");
+		ResultSet rs = dbkud.execSQL(String.format("SELECT md5,izena,deskribapena,pribatutasuna FROM argazki WHERE username='%s'",username));
 		List<Object[]> emaitza = new ArrayList<Object[]>();
 		try {
 			while(rs.next()){
@@ -50,7 +50,7 @@ public class ArgazkiakKud {
 				em[0] = (String) rs.getString("izena");
 				em[1] = (String) rs.getString("deskribapena");
 				em[2] = (String) rs.getString("pribatutasuna");
-				ResultSet rsetik =dbkud.execSQL(String.format("SELECT etiketa FROM Etiketak WHERE md5=%s AND username=%s", rs.getString("md5"), username));
+				ResultSet rsetik =dbkud.execSQL(String.format("SELECT etiketa FROM Etiketak WHERE md5='%s' AND username='%s'", rs.getString("md5"), username));
 				ArrayList<String> etiketak = new ArrayList<String>();
 				while(rsetik.next()){
 					etiketak.add(rsetik.getString("etiketa"));
@@ -69,7 +69,22 @@ public class ArgazkiakKud {
 
 	public void argazkiaSartu(String md5, String izen, String deskr, String prib, String flickrID, String username) {
 		DBKudeatzaile dbkud = DBKudeatzaile.getInstantzia();
-		dbkud.execSQL(String.format("INSERT INTO argazkia (md5,izena,deskribapena,pribatutasuna,flickrID,username) VALUES (%s,%s,%s,%s,%s,%s)", md5,izen,deskr,prib,flickrID,username));
+		dbkud.execSQL(String.format("INSERT INTO argazkia (md5,izena,deskribapena,pribatutasuna,flickrID,username) VALUES ('%s','%s','%s','%s','%s','%s')", md5,izen,deskr,prib,flickrID,username));
+	}
+
+	public void etiketakSartu(String md5, List<String> etiketak, String username){
+		DBKudeatzaile dbkud = DBKudeatzaile.getInstantzia();
+		for(String etiketa: etiketak){
+			dbkud.execSQL(String.format("INSERT INTO etiketak (md5,etiketa,username) VALUES('%s','%s','%s')", md5,etiketa,username));
+		}
+	}
+
+	public void argazkiaEzabatu(String md5, String username, List<String> etiketak) {
+		DBKudeatzaile dbkud = DBKudeatzaile.getInstantzia();
+		dbkud.execSQL(String.format("DELETE FROM argazkia WHERE md5='%s' AND username='%s'", md5,username));
+		for(String etiketa:etiketak){
+			dbkud.execSQL(String.format("DELETE FROM Etiketak WHERE md5='%s' AND etiketa='%s' AND username='%s'", md5,etiketa,username));
+		}
 	}
 	
 	
