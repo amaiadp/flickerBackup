@@ -37,6 +37,33 @@ public class ArgazkiakKud {
 		}
 		return emaitza;
 	}
+
+	public List<Object[]> argazkiakLortu(String username) {
+		DBKudeatzaile dbkud = DBKudeatzaile.getInstantzia();
+		ResultSet rs = dbkud.execSQL("SELECT md5,izena,deskribapena,pribatutasuna FROM argazki");
+		List<Object[]> emaitza = new ArrayList<Object[]>();
+		try {
+			while(rs.next()){
+				Object[] em = new Object[4];
+				em[0] = (String) rs.getString("izena");
+				em[1] = (String) rs.getString("deskribapena");
+				em[2] = (String) rs.getString("pribatutasuna");
+				ResultSet rsetik =dbkud.execSQL(String.format("SELECT etiketa FROM Etiketak WHERE md5=%s AND username=%s", rs.getString("md5"), username));
+				ArrayList<String> etiketak = new ArrayList<String>();
+				while(rsetik.next()){
+					etiketak.add(rsetik.getString("etiketa"));
+				}
+				em[3] = (ArrayList<String>) etiketak;
+				emaitza.add(em);
+			}
+			// TODO Auto-generated method stub
+			return emaitza;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
+	}
 	
 	
 //	public List<String[]> getEzarpenak(){

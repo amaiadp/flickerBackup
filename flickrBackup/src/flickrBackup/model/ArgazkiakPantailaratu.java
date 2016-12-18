@@ -1,7 +1,6 @@
 package flickrBackup.model;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -10,6 +9,8 @@ import java.util.HashMap;
 import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.List;
+import java.io.FileInputStream;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -28,6 +29,8 @@ import com.flickr4java.flickr.photosets.Photosets;
 import com.flickr4java.flickr.photosets.PhotosetsInterface;
 import com.flickr4java.flickr.tags.Tag;
 import com.flickr4java.flickr.util.IOUtilities;
+
+import flickrBackup.kudeatzaileak.ArgazkiakKud;
 
 public class ArgazkiakPantailaratu {
 
@@ -76,6 +79,13 @@ public class ArgazkiakPantailaratu {
 		System.exit(0);
 	}
 
+//	public ArrayList<Argazkia> preparePhotos(){
+//		String username = properties.getProperty("username");
+//		ArrayList<Argazkia> argkol = new ArrayList<Argazkia>();
+//		List<Object[]> argazkiak = ArgazkiakKud.getInstantzia().argazkiakLortu(username);
+//		
+//	}
+
 	public ArrayList<Argazkia> preparePhotos() {
 		ArrayList<Argazkia> argkol = new ArrayList<Argazkia>();
 		String userId = properties.getProperty("nsid");
@@ -113,7 +123,6 @@ public class ArgazkiakPantailaratu {
 				}
 				for (int page = 1; page <= HOWMANYPAGES; page++) {
 					col = photosetsInterface.getPhotos(id /* photosetId */, PHOTOSPERPAGE, page);
-					
 					for (Photo argazkia : col) {
 						if (!badago(argazkia.getId())){
 							Photo arg = pi.getInfo(argazkia.getId(), secret1);
@@ -131,6 +140,7 @@ public class ArgazkiakPantailaratu {
 		}
 		return argkol;
 	}
+
 	@SuppressWarnings("deprecation")
 	private Argazkia argazkiaSortu(Photo p){
 		String id =p.getId();
@@ -154,7 +164,7 @@ public class ArgazkiakPantailaratu {
 		arg.setPribatutasuna(p.isPublicFlag(), p.isFriendFlag(), p.isFamilyFlag());
 		return arg;
 	}
-	
+
 	private boolean badago(String id){
 		return ids.containsKey(id);
 	}
@@ -178,5 +188,4 @@ public class ArgazkiakPantailaratu {
 		}
 		return true;
 	}
-
 }

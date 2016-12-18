@@ -16,7 +16,7 @@ import javax.swing.ImageIcon;
 import com.flickr4java.flickr.FlickrException;
 import com.flickr4java.flickr.uploader.UploadMetaData;
 import com.flickr4java.flickr.uploader.Uploader;
-
+import com.flickr4java.flickr.photos.Photo;
 import com.flickr4java.flickr.photos.PhotosInterface;
 
 public class Argazkia {
@@ -29,7 +29,7 @@ public class Argazkia {
 	private ImageIcon thumbnail;
 	private String flickrID;
 	private Pribatutasuna prib = Pribatutasuna.PRIVACY_LEVEL_NO_FILTER;
-	private List<Album> albumak;
+	private ListaAlbum albumak;
 	
 	
 	public static enum Pribatutasuna{
@@ -154,11 +154,11 @@ public class Argazkia {
 		flickrID = fID;
 	}
 	
-	public List<Album> getAlbumak(){
+	public ListaAlbum getAlbumak(){
 		return albumak;
 	}
 	
-	public void setAlbumak(List<Album> al){
+	public void setAlbumak(ListaAlbum al){
 		albumak = al;
 	}
 	
@@ -211,8 +211,40 @@ public class Argazkia {
 		return md;
 	}
 	
-	private String igo1(){
-		Uploader up = Nagusia.getUploader();
+	private String[] lortuTags(){
+		String[] emaitza = new String[etiketak.size()];
+		int i =0;
+		for(String e: etiketak){
+			emaitza[i] = e; 
+		}
+		return emaitza;
+	}
+	
+	
+	private void informazioaAldatu(){
+		PhotosInterface pi = Nagusia.getInstantzia().getPhotosInterface();
+		try {
+			pi.setMeta(flickrID, izena, deskribapena);
+			String[] etik = lortuTags();
+			pi.setTags(flickrID,etik);
+		} catch (FlickrException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+//	private void ezabatu(){
+//		PhotosInterface pi = Nagusia.getInstantzia().getPhotosInterface();
+//		try {
+//			pi.delete(flickrID);
+//		} catch (FlickrException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//	}
+	
+	private void igo1(){
+		Uploader up = Nagusia.getInstantzia().getUploader();
 		UploadMetaData md = new UploadMetaData();
 		md.setTags(etiketak);
 		md.setDescription(deskribapena);
@@ -221,35 +253,28 @@ public class Argazkia {
 		String id =null;
 		try {
 			id = up.upload(path, md);
-			for(Album al: albumak){
-				if(al.existitzenDa()){
-					//if primaryphoto aldatzeko?
-					al.albumeraGehitu(id);
-				}
-				else{al.albumaSortu(id);}
-			}
+			albumak.argazkiaSartu(id);
 		} catch (FlickrException e) {
 			e.printStackTrace();
 		}
 		if (id!=null){
 			setFlickrID(id);
 		}
-		return id;
 	}
 	
-	public String igo(){
+	public void igo(){
 		if(flickrID==null){
-			return igo1();
+			igo1();
 		}
 		else{
 			if(Nagusia.berridatzi){
-				return igo1();
+				informazioaAldatu();
 			}
-			else{
+			else{if(Nagusia.berridatzi==null){
 				//llamada al JDialog
 			}
+			}
 		}
-		return null;
 	}
 	
 	
@@ -312,4 +337,23 @@ public class Argazkia {
 		}
 		
 	}
+	
+//	public static void main(String[] args) {
+//		PhotosInterface pi = Nagusia.getInstantzia().getPhotosInterface();
+//		String pid = "31136300990";
+//		String izena = "dadoak";
+//		String deskr = "frogak ein";
+//		String[] etik = {"no me lo puedo creer", "func", "iona"};
+//		try {
+//			Photo ph = pi.getPhoto(pid);
+//			pi.setMeta(pid, izena, deskr);
+//			pi.setTags(pid,etik );
+//			System.out.println("Pu: "+ ph.isPublicFlag()+ "  Fam: "+ph.isFamilyFlag()+ "  Fri: "+ph.isFriendFlag());
+//		} catch (FlickrException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		
+//	}
+
 }

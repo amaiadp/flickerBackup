@@ -1,43 +1,56 @@
 package flickrBackup.ui;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.*;
 
 public class Bistaratu extends JPanel{
     private JTable taula;
 	private BistaratuJT model;
+	private JPanel panela;
     
-    public Bistaratu() {
-    	super(new BorderLayout());
-    }
     
     public void sortu(){
-        argazkiakLortu();
-//        createAndShowGUI();
+    	this.setLayout(new BorderLayout());
+    	JButton bistaratu = new JButton("Bistaratu");
+    	bistaratu.addActionListener(new ActionListener() {
+			
+			@SuppressWarnings("deprecation")
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JScrollPane al = argazkiakLortu();
+				JPanel bis = Bistaratu.this;
+				bis.remove(bistaratu);
+				bis.add(al);
+				bis.revalidate();
+				((JFrame) SwingUtilities.getWindowAncestor(bis)).pack();;
+				bis.setVisible(true);
+			}
+		});
+    	this.add(bistaratu, BorderLayout.NORTH);
+    	
+    	
     }
 
-    private static void createAndShowGUI(){
-        JFrame frame = new JFrame("Bistaratu");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//       JComponent newContentPane = new Bistaratu();
-//       newContentPane.setOpaque(true); 
-//       frame.setContentPane(newContentPane);
-        frame.pack();
-        frame.setVisible(true);
-    }
     
-    public void argazkiakLortu(){
+    public JScrollPane argazkiakLortu(){
 		model = new BistaratuJT();
 		taula = new JTable(model);
 		taula.setRowHeight(60);
 		taula.setRowMargin(5);
 		taula.getTableHeader().setReorderingAllowed(false);
 		JScrollPane tableContainer = new JScrollPane(taula);
-		this.add(tableContainer, BorderLayout.CENTER);
+		return tableContainer;
 	}
 
     public static void main(String[] args) {
-    	Bistaratu j = new Bistaratu();
-    	j.sortu();
+    	Bistaratu n = new Bistaratu();
+		n.sortu();
+		JFrame f = new JFrame();
+		f.setContentPane(n);
+		f.setVisible(true);
+		f.pack();
     }
 }

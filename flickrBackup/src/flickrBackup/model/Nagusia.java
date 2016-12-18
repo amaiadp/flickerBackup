@@ -11,12 +11,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 import java.util.Scanner;
+import java.util.Collection;
 
 import javax.swing.JOptionPane;
-
 import org.scribe.model.Token;
-
-import java.util.Collection;
 
 import com.flickr4java.flickr.Flickr;
 import com.flickr4java.flickr.FlickrException;
@@ -38,7 +36,6 @@ import flickrBackup.model.Argazkia.Pribatutasuna;
 import flickrBackup.ui.LoginUI;
 import flickrBackup.ui.NagusiaUI;
 
-
 public class Nagusia {
 
 	private static Nagusia instantzia = getInstantzia();
@@ -51,8 +48,8 @@ public class Nagusia {
 	REST rest;
 	RequestContext requestContext;
 	Properties properties = null;
-	
-	
+
+
 	static final String[] EXTENSIONS = new String[]{
 	        "jpg", "gif", "png", "bmp"// and other formats you need
 	    };
@@ -74,7 +71,7 @@ public class Nagusia {
 	
 	private Nagusia() throws IOException{
 	}
-	
+
 	public static Nagusia getInstantzia(){
 		if (instantzia==null){
 			try {
@@ -134,7 +131,7 @@ public class Nagusia {
 		}
 		return f.getPhotosInterface();
 	}
-	
+
 	public ArrayList<Argazkia> igotzekoArgazkiakLortu(File pF){
 		igotzekoa= new ArrayList<Argazkia>();
 		for (File f : pF.listFiles(IMAGE_FILTER)){
@@ -180,8 +177,7 @@ public class Nagusia {
 			e.printStackTrace();
 		}
 	}
-	
-	
+
 	public String albumaSortu(String titulua, String deskr, String photoID){
 		PhotosetsInterface psi = f.getPhotosetsInterface();
 		try {
@@ -207,7 +203,7 @@ public class Nagusia {
 					Photoset pset = pi.getInfo(p.getId());
 					alkud.albumaSartu(pset.getId(), pset.getTitle(), pset.getDescription(), pset.getOwner().getRealName());
 				}
-				
+
 			}
 		} catch (FlickrException e) {
 			// TODO Auto-generated catch block
@@ -215,7 +211,7 @@ public class Nagusia {
 		}
 		
 	}
-	
+
 	private void propertiesFitxategiaBete(List<String[]> datuak){
 		Properties properties = new Properties();
 		for (String[] strings : datuak) {
