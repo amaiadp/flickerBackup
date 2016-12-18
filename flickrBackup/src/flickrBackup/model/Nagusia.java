@@ -179,11 +179,12 @@ public class Nagusia {
 	
 	
 
-	private void propertiesFitxategiaBete(List<String[]> datuak){
+	public void propertiesFitxategiaBete(List<String[]> datuak){
 		Properties properties = new Properties();
 		for (String[] strings : datuak) {
 			properties.setProperty(strings[0],strings[1]);
 		}
+		properties.remove("password");
 		try {
 			FileOutputStream out = new FileOutputStream(new File("src/setup.properties"));
 			properties.store(out, null);
@@ -227,13 +228,12 @@ public class Nagusia {
 				System.out.println(strings[0]+ "    " + strings[1]);
 
 			}
-			propertiesFitxategiaBete(datuak);
 		}
 		
 		return (datuak.size()>0);
 	}
 
-	public void sortuErabiltzailearenDatuak(Token requestToken, Auth auth, String apiKey, String secret) {
+	public void sortuErabiltzailearenDatuak(Token requestToken, Auth auth, String apiKey, String secret, String passw) {
 		List<String[]> lista = new ArrayList<>();
         String[] token = new String[2];
         token[0]= "token";
@@ -256,6 +256,9 @@ public class Nagusia {
         String[] secretL = new String[2];
         secretL[0] = "secret";
         secretL[1] = secret;
+        String[] passL = new String[2];
+        passL[0] = "password";
+        passL[1] = passw;
         
         lista.add(username);
         lista.add(displayname);
@@ -264,12 +267,18 @@ public class Nagusia {
         lista.add(nsid);
         lista.add(secretL);
         lista.add(apiKeyLista);
+        lista.add(passL);
         
         for (String[] string : lista) {
 			System.out.println(string[0]+ "    " + string[1]);
 		}
         propertiesFitxategiaBete(lista);
         ErabiltzaileKud.getInstantzia().sortuErabiltzailea(lista, username[1]);
+	}
+
+	public boolean pasahitzaKonprobatu(String username, String pass) {
+		String pasahitza = ErabiltzaileKud.getInstantzia().getPasahitza(username);
+		return pasahitza.equals(pass);
 	}
 
 	

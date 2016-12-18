@@ -1,13 +1,18 @@
 package flickrBackup.ui;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Label;
+import java.awt.LayoutManager;
 import java.awt.List;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
@@ -44,10 +49,14 @@ public class Igotzekoa extends JPanel {
 		this.setLayout(new BorderLayout());
 		
 		JPanel goikoJP = new JPanel(new FlowLayout());
+		JPanel goikoEzkerJP = new JPanel(new FlowLayout());
+		JPanel goikoEskuinJP = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 		
+		goikoJP.add(goikoEzkerJP);
+		goikoJP.add(goikoEskuinJP);
 		JButton ireki = new JButton("IREKI");
 		this.add(goikoJP, BorderLayout.NORTH);
-		goikoJP.add(ireki);
+		goikoEzkerJP.add(ireki);
 		ireki.addActionListener(new ActionListener() {
 			
 			@Override
@@ -67,7 +76,7 @@ public class Igotzekoa extends JPanel {
 		});
 		
 		JButton igo = new JButton("Igo Argazkiak");
-		goikoJP.add(igo);
+		goikoEzkerJP.add(igo);
 		
 		igo.addActionListener(new ActionListener() {
 			
@@ -84,6 +93,27 @@ public class Igotzekoa extends JPanel {
 				else{
 					JOptionPane.showMessageDialog(null,"Ez dago argazkirik hautatuta");
 				}
+				
+			}
+		});
+		
+		JButton logout = new JButton("Logout");
+		goikoEskuinJP.add(logout);
+		logout.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				PrintWriter writer;
+				try {
+					writer = new PrintWriter(new File("src/setup.properties"));
+					writer.print("");
+					writer.close();
+				} catch (FileNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				((JFrame) SwingUtilities.getWindowAncestor(Igotzekoa.this)).dispose();
+				new LoginUI();
 				
 			}
 		});

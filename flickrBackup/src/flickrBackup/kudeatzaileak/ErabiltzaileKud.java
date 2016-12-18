@@ -58,6 +58,30 @@ private static final ErabiltzaileKud erabiltzaileKud = new ErabiltzaileKud();
 		}
 		
 	}
+
+	public String getPasahitza(String username) {
+		DBKudeatzaile dbkud = DBKudeatzaile.getInstantzia();
+		ResultSet rs = dbkud.execSQL(String.format("select * from erabiltzaileak where username='%s' and key='password'", username));
+		String emaitza = null;
+		try {
+			rs.next();
+				emaitza = rs.getString("value");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return emaitza;
+	}
+
+	public void pasahitzaGehitu(String username, String passw) {
+		DBKudeatzaile dbk = DBKudeatzaile.getInstantzia();
+		try {
+			dbk.execSQL(String.format("Insert into erabiltzaileak (username,key,value) values ('%s','%s','%s')",username,"password", passw));
+
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+				
+	}
 	
 	
 }
