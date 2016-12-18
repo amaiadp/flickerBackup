@@ -7,9 +7,18 @@ import javax.swing.JTabbedPane;
 
 public class NagusiaUI extends JFrame {
 
+	private static NagusiaUI nagusiaUI = new NagusiaUI();
 	
 	
-	private void hasieratu(){
+	private NagusiaUI(){
+	}
+	
+	public static NagusiaUI getNagusiaUI(){
+		return nagusiaUI;
+	}
+	
+	
+	public void hasieratu(){
 		getContentPane().setLayout(new BorderLayout());
 		JTabbedPane tabPanel = new JTabbedPane(2);
 		Igotzekoa igo = new Igotzekoa();

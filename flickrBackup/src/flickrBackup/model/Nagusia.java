@@ -1,12 +1,21 @@
 package flickrBackup.model;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
+import java.util.Scanner;
+
+import javax.swing.JOptionPane;
+
+import org.scribe.model.Token;
+
 import java.util.Collection;
 
 import com.flickr4java.flickr.Flickr;
@@ -14,6 +23,7 @@ import com.flickr4java.flickr.FlickrException;
 import com.flickr4java.flickr.REST;
 import com.flickr4java.flickr.RequestContext;
 import com.flickr4java.flickr.auth.Auth;
+import com.flickr4java.flickr.auth.AuthInterface;
 import com.flickr4java.flickr.auth.Permission;
 import com.flickr4java.flickr.photos.PhotosInterface;
 import com.flickr4java.flickr.photosets.Photoset;
@@ -23,7 +33,10 @@ import com.flickr4java.flickr.uploader.Uploader;
 import com.flickr4java.flickr.util.IOUtilities;
 
 import flickrBackup.kudeatzaileak.AlbumakKud;
+import flickrBackup.kudeatzaileak.ErabiltzaileKud;
 import flickrBackup.model.Argazkia.Pribatutasuna;
+import flickrBackup.ui.LoginUI;
+import flickrBackup.ui.NagusiaUI;
 
 
 public class Nagusia {
@@ -203,25 +216,98 @@ public class Nagusia {
 		
 	}
 	
+	private void propertiesFitxategiaBete(List<String[]> datuak){
+		Properties properties = new Properties();
+		for (String[] strings : datuak) {
+			properties.setProperty(strings[0],strings[1]);
+		}
+		try {
+			FileOutputStream out = new FileOutputStream(new File("src/setup.properties"));
+			properties.store(out, null);
+			//out.close();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 	
-//	public static void main(String[] args) {
-//        try {
-//            Nagusia t = new Nagusia();
-//            t.igotzekoa = new ArrayList<Argazkia>();
-//            Argazkia arg = new Argazkia(new File("/home/zihara/Imágenes/4.png"));
-//            Argazkia arg1 = new Argazkia(new File("/home/zihara/Imágenes/5.png"));
-//            Argazkia arg2 = new Argazkia(new File("/home/zihara/Imágenes/6.png"));
-//            arg.setPrib(Pribatutasuna.PRIVACY_LEVEL_PRIVATE);
-//            arg1.setPrib(Pribatutasuna.PRIVACY_LEVEL_FRIENDS);
-//            arg2.setPrib(Pribatutasuna.PRIVACY_LEVEL_FAMILY);
-//            t.igotzekoa.add(arg);
-//            t.igotzekoa.add(arg1);
-//            t.igotzekoa.add(arg2);
-//            t.argazkiakIgo();
-//        
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//        System.exit(0);
-//    }
+	
+	public static void main(String[] args) {
+		InputStream in = null;
+		try {
+			in = new FileInputStream("src/setup.properties");
+			Properties properties = new Properties();
+			properties.load(in);
+			if (properties.getProperty("apiKey")==null || properties.getProperty("apiKey").equals("")){
+				new LoginUI();
+			}
+			else{
+				NagusiaUI.getNagusiaUI().hasieratu();
+				NagusiaUI.getNagusiaUI().bistaratu();
+			}
+		} catch (IOException e) {
+			JOptionPane.showMessageDialog(null,"Errorea setup.properties fitxategi kargatzean.");
+
+		} finally {
+			IOUtilities.close(in);
+		}
+    }
+
+	public boolean erabiltzaileakKonprobatu(String username) {
+		//erabiltzailea DB-n badago true itzultzen du
+		List<String[]> datuak = ErabiltzaileKud.getInstantzia().getErabiltzailea(username);
+		if (datuak.size()>0){
+			for (String[] strings : datuak) {
+				System.out.println(strings[0]+ "    " + strings[1]);
+
+			}
+			propertiesFitxategiaBete(datuak);
+		}
+		
+		return (datuak.size()>0);
+	}
+
+	public void sortuErabiltzailearenDatuak(Token requestToken, Auth auth, String apiKey, String secret) {
+		List<String[]> lista = new ArrayList<>();
+        String[] token = new String[2];
+        token[0]= "token";
+        token[1]= requestToken.getToken();
+        String[] tokensecret = new String[2];
+        tokensecret[0] = "tokensecret";
+        tokensecret[1]= requestToken.getSecret();
+        String[] nsid = new String[2];
+        nsid[0]= "nsid";
+        nsid[1] = auth.getUser().getId();
+        String[] displayname = new String[2];
+        displayname[0] = "displayname";
+        displayname[1] = auth.getUser().getRealName();
+        String[] username = new String[2];
+        username[0] = "username";
+        username[1] = auth.getUser().getUsername();
+        String[] apiKeyLista = new String[2];
+        apiKeyLista[0] = "apiKey";
+        apiKeyLista[1] = apiKey;
+        String[] secretL = new String[2];
+        secretL[0] = "secret";
+        secretL[1] = secret;
+        
+        lista.add(username);
+        lista.add(displayname);
+        lista.add(tokensecret);
+        lista.add(token);
+        lista.add(nsid);
+        lista.add(secretL);
+        lista.add(apiKeyLista);
+        
+        for (String[] string : lista) {
+			System.out.println(string[0]+ "    " + string[1]);
+		}
+        propertiesFitxategiaBete(lista);
+        ErabiltzaileKud.getInstantzia().sortuErabiltzailea(lista, username[1]);
+	}
+
+	
 }

@@ -156,10 +156,10 @@ public class Igotzekoa extends JPanel {
 	public void argazkiakLortu(){
 		Nagusia nL = Nagusia.getInstantzia();
 		ArrayList<Argazkia> igotzeko = nL.igotzekoArgazkiakLortu(karpeta);
-		taula.getTableHeader().setReorderingAllowed(false);
 		if (model==null){
 			model = new IgotzekoaJT(igotzeko);
 			taula = new JTable(model);
+			taula.getTableHeader().setReorderingAllowed(false);
 			taula.setRowHeight(60);
 			taula.setRowMargin(5);
 			argazkiSP = new JScrollPane(taula);

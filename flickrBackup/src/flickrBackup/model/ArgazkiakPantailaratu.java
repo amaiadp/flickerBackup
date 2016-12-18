@@ -1,6 +1,7 @@
 package flickrBackup.model;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -47,7 +48,7 @@ public class ArgazkiakPantailaratu {
 	public ArgazkiakPantailaratu() throws IOException {
 		InputStream in = null;
 		try {
-			in = getClass().getResourceAsStream("/setup.properties");
+			in = new FileInputStream("src/setup.properties");
 			properties = new Properties();
 			properties.load(in);
 		} finally {
