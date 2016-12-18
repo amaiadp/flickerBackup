@@ -51,7 +51,7 @@ public class Nagusia {
 
 
 	static final String[] EXTENSIONS = new String[]{
-	        "jpg", "gif", "png", "bmp"// and other formats you need
+	        "jpeg", "jpg", "gif", "png", "bmp"// and other formats you need
 	    };
 	
 	 public static final FilenameFilter IMAGE_FILTER = new FilenameFilter() {
@@ -130,6 +130,10 @@ public class Nagusia {
 			flickrSortu();
 		}
 		return f.getPhotosInterface();
+	}
+	
+	public String getProperty(String key){
+		return (properties.getProperty(key));
 	}
 
 	public ArrayList<Argazkia> igotzekoArgazkiakLortu(File pF){

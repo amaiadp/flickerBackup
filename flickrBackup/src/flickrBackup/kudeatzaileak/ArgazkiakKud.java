@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import flickrBackup.model.Argazkia;
+
 public class ArgazkiakKud {
 
 	private static final ArgazkiakKud argazkiakKud = new ArgazkiakKud();
@@ -63,6 +65,11 @@ public class ArgazkiakKud {
 			e.printStackTrace();
 			return null;
 		}
+	}
+
+	public void argazkiaSartu(String md5, String izen, String deskr, String prib, String flickrID, String username) {
+		DBKudeatzaile dbkud = DBKudeatzaile.getInstantzia();
+		dbkud.execSQL(String.format("INSERT INTO argazkia (md5,izena,deskribapena,pribatutasuna,flickrID,username) VALUES (%s,%s,%s,%s,%s,%s)", md5,izen,deskr,prib,flickrID,username));
 	}
 	
 	

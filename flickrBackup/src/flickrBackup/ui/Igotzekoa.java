@@ -78,6 +78,7 @@ public class Igotzekoa extends JPanel {
 					int zenbat = indizeak.length;
 					for (int index : indizeak){
 						 Argazkia a = model.getArgazkia(index);
+						 a.igo();
 					}
 				}
 				else{

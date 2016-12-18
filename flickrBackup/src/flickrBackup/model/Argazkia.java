@@ -16,6 +16,9 @@ import javax.swing.ImageIcon;
 import com.flickr4java.flickr.FlickrException;
 import com.flickr4java.flickr.uploader.UploadMetaData;
 import com.flickr4java.flickr.uploader.Uploader;
+
+import flickrBackup.kudeatzaileak.ArgazkiakKud;
+
 import com.flickr4java.flickr.photos.Photo;
 import com.flickr4java.flickr.photos.PhotosInterface;
 
@@ -246,21 +249,32 @@ public class Argazkia {
 	private void igo1(){
 		Uploader up = Nagusia.getInstantzia().getUploader();
 		UploadMetaData md = new UploadMetaData();
+		etiketak.add(id);
 		md.setTags(etiketak);
 		md.setDescription(deskribapena);
 		md.setTitle(izena);
 		md = pribatutasunaEsleitu(md);
-		String id =null;
+		String idF =null;
 		try {
-			id = up.upload(path, md);
-			albumak.argazkiaSartu(id);
+			idF = up.upload(path, md);
+			if (idF!=null){
+				System.out.println(getIzena()+":Lo ha subido");
+				setFlickrID(idF);
+				ArgazkiakKud argkud = ArgazkiakKud.getInstantzia();
+				argkud.argazkiaSartu(getId(),getIzena(),getDeskribapena(),getPrib(),getFlickrID(),Nagusia.getInstantzia().getProperty("username"));
+			}
+			else{
+				System.out.println(getIzena()+":EZ TEU IGON");
+			}
+			if (albumak!=null){
+				albumak.argazkiaSartu(idF);
+			}
 		} catch (FlickrException e) {
 			e.printStackTrace();
 		}
-		if (id!=null){
-			setFlickrID(id);
-		}
 	}
+	
+	
 	
 	public void igo(){
 		if(flickrID==null){
