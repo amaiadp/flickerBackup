@@ -1,14 +1,25 @@
 package flickrBackup.ui;
 
 import java.awt.BorderLayout;
+import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
+
+import flickrBackup.model.Nagusia;
 
 public class NagusiaUI extends JFrame {
 
 	private static NagusiaUI nagusiaUI = new NagusiaUI();
-	
+
+	private boolean igoArgazkia = false;
 	
 	private NagusiaUI(){
 	}
@@ -43,6 +54,56 @@ public class NagusiaUI extends JFrame {
 		NagusiaUI n = new NagusiaUI();
 		n.hasieratu();
 		n.bistaratu();
+	}
+
+	public boolean argazkiaDagoIgo() {
+		JDialog jd = new JDialog();
+		jd.setModal(true);
+		JPanel jp = new JPanel(new BorderLayout());
+		JPanel erdikoJp = new JPanel(new BorderLayout());
+		JPanel behekoJp = new JPanel(new FlowLayout());
+		jp.add(behekoJp, BorderLayout.SOUTH);
+		jp.add(erdikoJp, BorderLayout.CENTER);
+		JButton igo = new JButton("Igo");
+		JButton ezIgo = new JButton("Ez igo");
+		JLabel mezua = new JLabel("Argazkia dagoeneko Flickr-en dago. Igo nahi duzu?");
+		JCheckBox gogoratu = new JCheckBox("Gogoratu aukera");
+		behekoJp.add(igo);
+		behekoJp.add(ezIgo);
+		erdikoJp.add(mezua, BorderLayout.CENTER);
+		erdikoJp.add(gogoratu, BorderLayout.SOUTH);
+		
+		igo.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				igoArgazkia = true;
+				if (gogoratu.isSelected()){
+					Nagusia.berridatzi = new Boolean(true);
+				}
+				dispose();
+			}
+		});
+		
+		ezIgo.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				if (gogoratu.isSelected()){
+					Nagusia.berridatzi = new Boolean(false);
+				}
+				dispose();
+			}
+		});
+		
+		
+		jd.getContentPane().add(jp, BorderLayout.CENTER);
+		jd.pack();
+		jd.setVisible(true);
+	
+		
+		return igoArgazkia;
+	
 	}
 
 }
