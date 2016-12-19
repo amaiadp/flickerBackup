@@ -89,4 +89,9 @@ public class Album {
 		return "ID: "+id+"  Izena: "+izena;
 	}
 	
+	public String inprimatuIzen() {
+		// TODO Auto-generated method stub
+		return id.substring(id.length()-5)+": "+izena;
+	}
+	
 }
