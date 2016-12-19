@@ -22,7 +22,7 @@ public class ListaAlbum {
 		
 	}
 
-	public String get(int i) {
+	public String getAlbumInfo(int i) {
 		return lista.get(i).inprimatu();
 	}
 
@@ -47,6 +47,14 @@ public class ListaAlbum {
 			}
 		}
 		return emaitza;
+	}
+	
+	public Album getAlbum(int index){
+		return this.lista.get(index);
+	}
+	
+	public void remove(Album al){
+		this.lista.remove(al);
 	}
 
 }

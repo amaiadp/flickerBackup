@@ -8,6 +8,7 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.GridLayout;
 import java.awt.Label;
 import java.awt.LayoutManager;
 import java.awt.List;
@@ -34,8 +35,10 @@ import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
 import flickrBackup.model.Argazkia;
+import flickrBackup.model.Album;
 import flickrBackup.model.Albumak;
 import flickrBackup.model.Argazkia.Pribatutasuna;
+import flickrBackup.model.ListaAlbum;
 import flickrBackup.model.Nagusia;
 
 public class Igotzekoa extends JPanel {
@@ -101,6 +104,9 @@ public class Igotzekoa extends JPanel {
 				
 			}
 		});
+
+		
+		
 		
 		JButton logout = new JButton("Logout");
 		goikoEskuinJP.add(logout);
@@ -143,10 +149,26 @@ public class Igotzekoa extends JPanel {
 		Albumak albs = Albumak.getInstantzia();
 		int i=albs.luzeera()-1;
 		
+		ListaAlbum aukeratutakoAlbumak = new ListaAlbum();
 		aldaketaJP.add(albumL);
 		while(i>=0){
-			System.out.println(albs.getAlbum(i));
-			albumJP.add(new JCheckBox(albs.getAlbum(i)));
+			System.out.println(albs.getAlbumInfo(i));
+			JCheckBox cb = new JCheckBox(albs.getAlbumInfo(i));
+			albumJP.add(cb);
+			Album album = albs.getAlbum(i);
+			cb.addActionListener(new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					if(cb.isSelected()){
+						aukeratutakoAlbumak.add(album);
+					}else{
+						aukeratutakoAlbumak.remove(album);
+					}
+					
+				}
+			});
+		
 			i--;
 		}
 		aldaketaJP.add(albumJP);
@@ -181,6 +203,9 @@ public class Igotzekoa extends JPanel {
 						if(pribCB.getSelectedItem()!=null){
 							taula.setValueAt(pribCB.getSelectedItem(), index, 5);
 						}
+						if(aukeratutakoAlbumak.luzeera()>0){
+							model.getArgazkia(index).setAlbumak(aukeratutakoAlbumak);
+						}
 					}
 					model.fireTableStructureChanged();
 					pribCB.setSelectedItem(null);
@@ -190,6 +215,75 @@ public class Igotzekoa extends JPanel {
 			}
 		});
 		
+		
+		JButton albumSortu = new JButton("Albuma Sortu");
+		goikoEzkerJP.add(albumSortu);		
+		albumSortu.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (taula != null && model != null){
+					if(taula.getSelectedRows().length==1 && model.getArgazkia(taula.getSelectedRow()).getFlickrID()!=null ){
+						JDialog jd = new JDialog();
+						jd.setTitle("Album sortu");
+						jd.setModal(true);
+						JPanel jp = new JPanel(new BorderLayout());
+						JPanel erdikoJp = new JPanel(new GridLayout(2,2));
+						jp.add(erdikoJp, BorderLayout.CENTER);
+						JButton ok = new JButton("OK");
+						jp.add(ok, BorderLayout.SOUTH);
+						erdikoJp.add(new JLabel("Izena"));
+						JTextField izenaT = new JTextField();
+						erdikoJp.add(izenaT);
+						erdikoJp.add(new JLabel("Deskribapena"));
+						JTextField deskT = new JTextField();
+						erdikoJp.add(deskT);
+						
+						ok.addActionListener(new ActionListener() {
+							
+							@Override
+							public void actionPerformed(ActionEvent arg0) {
+								if(!izenaT.getText().equals("") && izenaT.getText().split("\\s*").length>0){
+									Album al = new Album(izenaT.getText(), deskT.getText(), null);
+									Argazkia ar = model.getArgazkia(taula.getSelectedRow());
+									al.albumaSortu(ar.getId(),ar.getFlickrID());
+									JCheckBox cb = new JCheckBox(al.inprimatu());
+									albumJP.add(cb);
+									cb.addActionListener(new ActionListener() {
+										
+										@Override
+										public void actionPerformed(ActionEvent e) {
+											if(cb.isSelected()){
+												aukeratutakoAlbumak.add(al);
+											}else{
+												aukeratutakoAlbumak.remove(al);
+											}
+											
+										}
+									});
+									albumJP.repaint();
+						            JOptionPane.showMessageDialog(null, "Albuma sortu da.", "Album", JOptionPane.INFORMATION_MESSAGE);
+
+								}else{
+						            JOptionPane.showMessageDialog(null, "Sartu izen bat.", "Errorea", JOptionPane.ERROR_MESSAGE);
+
+								}
+							}
+						});					
+						
+						jd.getContentPane().add(jp, BorderLayout.CENTER);
+						jd.pack();
+						jd.setVisible(true);
+
+					}
+					model.fireTableStructureChanged();
+				}
+				else{
+		            JOptionPane.showMessageDialog(null, "Aukeratu igota dagoen argazki bat.", "Errorea", JOptionPane.ERROR_MESSAGE);
+				}
+				
+			}
+		});
 		
 	}
 	
