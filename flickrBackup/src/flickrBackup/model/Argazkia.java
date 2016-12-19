@@ -384,6 +384,17 @@ public class Argazkia {
 		}
 		
 	}
+
+	public void albumakEsleitu(ListaAlbum aukeratutakoAlbumak) {
+		this.albumak = new ListaAlbum();
+		for (int i = 0; i < aukeratutakoAlbumak.luzeera(); i++) {
+			albumak.add(aukeratutakoAlbumak.getAlbum(i));
+		}
+	}
+
+	public void gehituAlbum(Album al) {
+		this.albumak.add(al);
+	}
 	
 //	public static void main(String[] args) {
 //		PhotosInterface pi = Nagusia.getInstantzia().getPhotosInterface();

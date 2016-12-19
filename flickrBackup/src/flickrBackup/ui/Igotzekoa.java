@@ -205,7 +205,7 @@ public class Igotzekoa extends JPanel {
 							taula.setValueAt(pribCB.getSelectedItem(), index, 5);
 						}
 						if(aukeratutakoAlbumak.luzeera()>0){
-							model.getArgazkia(index).setAlbumak(aukeratutakoAlbumak);
+							model.getArgazkia(index).albumakEsleitu(aukeratutakoAlbumak);
 						}
 					}
 					model.fireTableStructureChanged();
@@ -248,6 +248,7 @@ public class Igotzekoa extends JPanel {
 								if(!izenaT.getText().equals("") && izenaT.getText().split("\\s*").length>0){
 									Album al = new Album(izenaT.getText(), deskT.getText(), null);
 									Argazkia ar = model.getArgazkia(taula.getSelectedRow());
+									ar.gehituAlbum(al);
 									al.albumaSortu(ar.getId(),ar.getFlickrID());
 									JCheckBox cb = new JCheckBox(al.inprimatu());
 									albumJP.add(cb);
@@ -263,7 +264,7 @@ public class Igotzekoa extends JPanel {
 											
 										}
 									});
-									albumJP.repaint();
+									albumJP.revalidate();
 						            JOptionPane.showMessageDialog(null, "Albuma sortu da.", "Album", JOptionPane.INFORMATION_MESSAGE);
 						            jd.dispose();
 
