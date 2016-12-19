@@ -16,7 +16,7 @@ public class Album {
 	
 	
 	public Album(String izen, String deskr,String idF){
-		pi = Nagusia.getInstantzia().getPhotosetsInterface();
+		pi = Nagusia.getInstantzia().getFlickr().getPhotosetsInterface();
 		izena = izen;
 		deskribapena = deskr;
 		id = idF;

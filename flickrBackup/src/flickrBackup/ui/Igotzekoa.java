@@ -137,19 +137,19 @@ public class Igotzekoa extends JPanel {
 			pribCB.addItem(elem);
 		}
 		pribCB.setSelectedItem(null);
-//		JLabel albumL = new JLabel("Albumak");
-//		JPanel albumJP = new JPanel();
-//		albumJP.setLayout(new BoxLayout(albumJP,BoxLayout.Y_AXIS));
-//		Albumak albs = Albumak.getInstantzia();
-//		int i=albs.luzeera()-1;
-//		
-//		aldaketaJP.add(albumL);
-//		while(i>=0){
-//			System.out.println(albs.getAlbum(i));
-//			albumJP.add(new JCheckBox(albs.getAlbum(i)));
-//			i--;
-//		}
-//		aldaketaJP.add(albumJP);
+		JLabel albumL = new JLabel("Albumak");
+		JPanel albumJP = new JPanel();
+		albumJP.setLayout(new BoxLayout(albumJP,BoxLayout.Y_AXIS));
+		Albumak albs = Albumak.getInstantzia();
+		int i=albs.luzeera()-1;
+		
+		aldaketaJP.add(albumL);
+		while(i>=0){
+			System.out.println(albs.getAlbum(i));
+			albumJP.add(new JCheckBox(albs.getAlbum(i)));
+			i--;
+		}
+		aldaketaJP.add(albumJP);
 
 		aldaketaJP.add(deskL);
 		aldaketaJP.add(deskT);

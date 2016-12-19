@@ -262,7 +262,7 @@ public class Argazkia {
 	}
 	
 	private void igo1(){
-		Uploader up = Nagusia.getInstantzia().getUploader();
+		Uploader up = Nagusia.getInstantzia().getFlickr().getUploader();
 		UploadMetaData md = new UploadMetaData();
 		etiketak.add(id);
 		md.setTags(etiketak);
