@@ -81,7 +81,7 @@ public class NagusiaUI extends JFrame {
 				if (gogoratu.isSelected()){
 					Nagusia.berridatzi = new Boolean(true);
 				}
-				dispose();
+				jd.dispose();
 			}
 		});
 		
@@ -92,7 +92,7 @@ public class NagusiaUI extends JFrame {
 				if (gogoratu.isSelected()){
 					Nagusia.berridatzi = new Boolean(false);
 				}
-				dispose();
+				jd.dispose();
 			}
 		});
 		

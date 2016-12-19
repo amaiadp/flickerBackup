@@ -7,6 +7,7 @@ import java.io.FileOutputStream;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -84,7 +85,7 @@ public class Nagusia {
 	private void flickrSortu(){
 		InputStream in = null;
 		try {
-			in = new FileInputStream("src/setup.properties");
+			in = new FileInputStream("setup.properties");
 			properties = new Properties();
 			properties.load(in);
 		} catch (IOException e) {
@@ -185,7 +186,7 @@ public class Nagusia {
 		}
 		properties.remove("password");
 		try {
-			FileOutputStream out = new FileOutputStream(new File("src/setup.properties"));
+			FileOutputStream out = new FileOutputStream(new File("setup.properties"));
 			properties.store(out, null);
 			//out.close();
 		} catch (FileNotFoundException e) {
@@ -201,7 +202,7 @@ public class Nagusia {
 	public static void main(String[] args) {
 		InputStream in = null;
 		try {
-			in = new FileInputStream("src/setup.properties");
+			in = new FileInputStream("setup.properties");
 			Properties properties = new Properties();
 			properties.load(in);
 			if (properties.getProperty("apiKey")==null || properties.getProperty("apiKey").equals("")){
@@ -272,12 +273,27 @@ public class Nagusia {
 			System.out.println(string[0]+ "    " + string[1]);
 		}
         propertiesFitxategiaBete(lista);
+        if(ErabiltzaileKud.getInstantzia().getErabiltzailea(username[1]).size()>0){
+        	ErabiltzaileKud.getInstantzia().erabiltzaileEzabatu(username[1]);
+        }
         ErabiltzaileKud.getInstantzia().sortuErabiltzailea(lista, username[1]);
 	}
 
 	public boolean pasahitzaKonprobatu(String username, String pass) {
 		String pasahitza = ErabiltzaileKud.getInstantzia().getPasahitza(username);
 		return pasahitza.equals(pass);
+	}
+
+	public void ezabatuPropertiesFitxategia() {
+		PrintWriter writer;
+		try {
+			writer = new PrintWriter(new File("setup.properties"));
+			writer.print("");
+			writer.close();
+		} catch (FileNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}		
 	}
 
 	
