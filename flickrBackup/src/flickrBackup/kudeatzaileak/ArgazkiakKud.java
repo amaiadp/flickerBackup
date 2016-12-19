@@ -21,16 +21,18 @@ public class ArgazkiakKud {
 	}
 
 	
-	public String[] getArgazkia(String id, String username){
+	public Object[] getArgazkia(String id, String username){
 		DBKudeatzaile dbkud = DBKudeatzaile.getInstantzia();
-		ResultSet rs = dbkud.execSQL(String.format("select izena,deskribapena,pribatutasuna from argazkia WHERE md5='%s' AND username='%s'",id,username));
+		ResultSet rs = dbkud.execSQL(String.format("select izena,deskribapena,pribatutasuna,flickrID from argazkia WHERE md5='%s' AND username='%s'",id,username));
 		
 		try {
 			rs.next();
-			String[] res = new String[3];
+			Object[] res = new Object[5];
 			res[0] = rs.getString("izena");
 			res[1] = rs.getString("deskribapena");
 			res[2] = rs.getString("pribatutasuna");
+			res[3] = rs.getString("flickrID");
+			res[4] = getEtiketak(id,username);
 			return res;
 			
 		} catch (SQLException e) {
@@ -46,15 +48,10 @@ public class ArgazkiakKud {
 		try {
 			while(rs.next()){
 				Object[] em = new Object[4];
-				em[0] = (String) rs.getString("izena");
-				em[1] = (String) rs.getString("deskribapena");
-				em[2] = (String) rs.getString("pribatutasuna");
-				ResultSet rsetik =dbkud.execSQL(String.format("SELECT etiketa FROM Etiketak WHERE md5='%s' AND username='%s'", rs.getString("md5"), username));
-				ArrayList<String> etiketak = new ArrayList<String>();
-				while(rsetik.next()){
-					etiketak.add(rsetik.getString("etiketa"));
-				}
-				em[3] = (ArrayList<String>) etiketak;
+				em[0] = rs.getString("izena");
+				em[1] = rs.getString("deskribapena");
+				em[2] = rs.getString("pribatutasuna");
+				em[3] = getEtiketak(rs.getString("md5"),username);
 				emaitza.add(em);
 			}
 			// TODO Auto-generated method stub
@@ -64,6 +61,21 @@ public class ArgazkiakKud {
 			e.printStackTrace();
 			return null;
 		}
+	}
+	
+	private List<String> getEtiketak(String md5, String username){
+		DBKudeatzaile dbkud = DBKudeatzaile.getInstantzia();
+		ResultSet rsetik =dbkud.execSQL(String.format("SELECT etiketa FROM Etiketak WHERE md5='%s' AND username='%s'", md5, username));
+		ArrayList<String> etiketak = new ArrayList<String>();
+		try {
+			while(rsetik.next()){
+				etiketak.add(rsetik.getString("etiketa"));
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return etiketak;
 	}
 
 	public void argazkiaSartu(String md5, String izen, String deskr, String prib, String flickrID, String username) {

@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.imageio.ImageIO;
-import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
 import com.flickr4java.flickr.FlickrException;
@@ -20,7 +19,6 @@ import com.flickr4java.flickr.uploader.Uploader;
 import flickrBackup.kudeatzaileak.ArgazkiakKud;
 import flickrBackup.ui.NagusiaUI;
 
-import com.flickr4java.flickr.photos.Photo;
 import com.flickr4java.flickr.photos.PhotosInterface;
 
 public class Argazkia {
@@ -50,6 +48,7 @@ public class Argazkia {
 		thumbnail = thumbnailLortu(f);
 		etiketak = new ArrayList<String>();
 		path = f;
+		albumak = new ListaAlbum();
 		if(!argkud.badago(id, Nagusia.getInstantzia().getProperty("username"))){
 			izena = f.getName();
 			deskribapena = null;
@@ -57,10 +56,12 @@ public class Argazkia {
 			flickrID = null;
 		}
 		else{
-			String[] info = argkud.getArgazkia(id,Nagusia.getInstantzia().getProperty("username"));
-			izena = info[0];
-			deskribapena = info[1];
-			setPrib(info[2]);
+			Object[] info = argkud.getArgazkia(id,Nagusia.getInstantzia().getProperty("username"));
+			izena = (String) info[0];
+			deskribapena = (String)info[1];
+			setPrib((String)info[2]);
+			flickrID = (String)info[3];
+			etiketak = (List<String>) info[4];
 		}
 	}
 		
@@ -195,17 +196,6 @@ public class Argazkia {
 	
 	public void setAlbumak(ListaAlbum al){
 		albumak = al;
-	}
-	
-	public void aldatu(PhotosInterface pi){
-		//etiketak String[] egin EDO horrela utzi
-		String[] et = (String[]) etiketak.toArray();
-		try {
-			pi.addTags(flickrID, et);
-		} catch (FlickrException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 	}
 	
 	public void setPribatutasuna(Boolean publi, Boolean fri, Boolean fam){
