@@ -107,15 +107,7 @@ public class Igotzekoa extends JPanel {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				PrintWriter writer;
-				try {
-					writer = new PrintWriter(new File("src/setup.properties"));
-					writer.print("");
-					writer.close();
-				} catch (FileNotFoundException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
+				Nagusia.getInstantzia().ezabatuPropertiesFitxategia();
 				((JFrame) SwingUtilities.getWindowAncestor(Igotzekoa.this)).dispose();
 				new LoginUI();
 				

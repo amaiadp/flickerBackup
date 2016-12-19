@@ -82,6 +82,10 @@ private static final ErabiltzaileKud erabiltzaileKud = new ErabiltzaileKud();
 		}
 				
 	}
+
+	public void erabiltzaileEzabatu(String username) {
+		DBKudeatzaile.getInstantzia().execSQL("Delete from erabiltzaileak where username ='" + username + "'");
+	}
 	
 	
 }
