@@ -69,6 +69,17 @@ public class Nagusia {
 	    };
 	
 	private Nagusia(){
+		
+	}
+
+	public static Nagusia getInstantzia(){
+		if (instantzia==null){
+			instantzia = new Nagusia();
+		}
+		return instantzia;
+	}
+	
+	private void flickrSortu(){
 		InputStream in = null;
 		try {
 			in = new FileInputStream("setup.properties");
@@ -81,23 +92,13 @@ public class Nagusia {
 		} finally {
 			IOUtilities.close(in);
 		}
-	}
-
-	public static Nagusia getInstantzia(){
-		if (instantzia==null){
-			instantzia = new Nagusia();
-		}
-		return instantzia;
-	}
-	
-	private void flickrSortu(){
-		
 		f = new Flickr(properties.getProperty("apiKey"), properties.getProperty("secret"), new REST());
 		requestContext = RequestContext.getRequestContext();
 		Auth auth = new Auth();
 		auth.setPermission(Permission.READ);
 		auth.setToken(properties.getProperty("token"));
 		auth.setTokenSecret(properties.getProperty("tokensecret"));
+		f.setAuth(auth);
 		requestContext.setAuth(auth);
 		Flickr.debugRequest = false;
 		Flickr.debugStream = false;
@@ -106,24 +107,12 @@ public class Nagusia {
 	}
 	
 	
-	public Uploader getUploader(){
-		if(f==null){
-			flickrSortu();
-		}
-		return f.getUploader();
-	}
-	
-	public PhotosetsInterface getPhotosetsInterface(){
-		if(f==null){
-			flickrSortu();
-		}
-		return f.getPhotosetsInterface();
-	}
 	
 	public Flickr getFlickr(){
 		if(f==null){
 			flickrSortu();
 		}
+		RequestContext.getRequestContext().setAuth(f.getAuth());
 		return f;
 	}
 	
