@@ -37,9 +37,9 @@ public class ListaAlbum {
 
 	public String inprimatu() {
 		String emaitza = "";
-		Album al1 = lista.get(0);
-		if (al1!=null){
-			emaitza = al1.inprimatu();
+		Album al1 = null;
+		if (!lista.isEmpty()){
+			al1 =lista.get(0);
 		}
 		for(Album al:lista){
 			if (!al.equals(al1)){
