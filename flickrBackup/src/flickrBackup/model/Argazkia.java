@@ -251,7 +251,7 @@ public class Argazkia {
 		PhotosInterface pi = Nagusia.getInstantzia().getFlickr().getPhotosInterface();
 		try {
 			ArgazkiakKud argkud = ArgazkiakKud.getInstantzia();
-			argkud.argazkiaEzabatu(id,Nagusia.getInstantzia().getProperty("username"),etiketak);
+			argkud.argazkiaEzabatu(id,Nagusia.getInstantzia().getProperty("username"));
 			pi.delete(flickrID);
 			
 		} catch (FlickrException e) {

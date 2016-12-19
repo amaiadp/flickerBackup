@@ -22,15 +22,14 @@ public class Albumak {
 	
 	private ListaAlbum albumakLortu(){
 		ListaAlbum lal = new ListaAlbum();
-		lal = albumakLortuFlickr();
+		albumakLortuFlickr();
 		AlbumakKud albkud = AlbumakKud.getInstantzia();
 		lal.addAll(albkud.albumakLortuDB(Nagusia.getInstantzia().getProperty("username")));
 		System.out.println("DBan:"+lal.luzeera());
 		return lal;
 	}
 	
-	private ListaAlbum albumakLortuFlickr(){
-		ListaAlbum lal = new ListaAlbum();
+	private void albumakLortuFlickr(){
 		Flickr flickr = Nagusia.getInstantzia().getFlickr();
 		PhotosetsInterface pi = flickr.getPhotosetsInterface();
 		try {
@@ -45,16 +44,11 @@ public class Albumak {
 					String izen = pset.getTitle();
 					String deskr =pset.getDescription();
 					alkud.albumaSartu(pset.getId(), izen, deskr, Nagusia.getInstantzia().getProperty("username"));
-					Album album = new Album(izen, deskr,id);
-					lal.add(album);
 				}
 			}
-			System.out.println("flickren:"+lal.luzeera());
-			return lal;
 		} catch (FlickrException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			return null;
 		}
 	}
 	
@@ -72,4 +66,5 @@ public class Albumak {
 		}
 		return albumak;
 	}
+	
 }
