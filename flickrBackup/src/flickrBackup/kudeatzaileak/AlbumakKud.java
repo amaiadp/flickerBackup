@@ -22,7 +22,7 @@ public class AlbumakKud {
 	
 	public void albumaSartu(String id, String tit, String deskr, String ppID, String username){
 		DBKudeatzaile dbkud = DBKudeatzaile.getInstantzia();
-		dbkud.execSQL(String.format("INSERT INTO Album VALUES ('%s','%s','%s','%s','%s')", id,tit,deskr,ppID,username));
+		dbkud.execSQL(String.format("INSERT INTO Album VALUES ('%s','%s','%s','%s','%s')", id,tit,deskr,username,ppID));
 	}
 
 	public boolean DBandago(String id,String username) {
@@ -42,7 +42,7 @@ public class AlbumakKud {
 		ResultSet rs = dbkud.execSQL(String.format("SELECT * FROM Izan WHERE md5='%s' AND idAlbum='%s' AND username='%s'",md5,idAlbum,username));
 		try {
 			rs.next();
-			System.out.println(rs.getString("md5"));
+			rs.getString("md5");
 			return true;
 		} catch (SQLException e) {
 			return false;

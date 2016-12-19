@@ -30,9 +30,9 @@ public class ListaAlbum {
 		return lista.size();
 	}
 
-	public void addAll(ArrayList<Album> listaAlbum) {
+	public ListaAlbum addAll(ArrayList<Album> listaAlbum) {
 		lista.addAll(listaAlbum);
-		
+		return this;
 	}
 
 	public String inprimatu() {

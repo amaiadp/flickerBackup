@@ -24,7 +24,7 @@ public class Albumak {
 		ListaAlbum lal = new ListaAlbum();
 		albumakLortuFlickr();
 		AlbumakKud albkud = AlbumakKud.getInstantzia();
-		lal.addAll(albkud.albumakLortuDB(Nagusia.getInstantzia().getProperty("username")));
+		lal = lal.addAll(albkud.albumakLortuDB(Nagusia.getInstantzia().getProperty("username")));
 		System.out.println("DBan:"+lal.luzeera());
 		return lal;
 	}
@@ -43,6 +43,9 @@ public class Albumak {
 					Photoset pset = pi.getInfo(id);
 					String izen = pset.getTitle();
 					String deskr =pset.getDescription();
+					if (deskr==null){
+						deskr= "";
+					}
 					String ppID = pset.getPrimaryPhoto().getId();
 					alkud.albumaSartu(pset.getId(), izen, deskr, ppID, Nagusia.getInstantzia().getProperty("username"));
 				}

@@ -37,9 +37,6 @@ public class ArgazkiakKud {
 			while(albrs.next()){
 				albums.add(albrs.getString("idAlbum"));
 			}
-			if(albums.isEmpty()){
-				albums = null;
-			}
 			res[5] = albums;
 			return res;
 			
