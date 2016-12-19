@@ -13,6 +13,7 @@ public class Album {
 	String izena;
 	String deskribapena;
 	PhotosetsInterface pi;
+	String primaryPhotoID;
 	
 	
 	public Album(String izen, String deskr,String idF){
@@ -20,6 +21,15 @@ public class Album {
 		izena = izen;
 		deskribapena = deskr;
 		id = idF;
+		primaryPhotoID = null;
+	}
+	
+	public Album(String izen, String deskr,String idF,String ppID){
+		pi = Nagusia.getInstantzia().getFlickr().getPhotosetsInterface();
+		izena = izen;
+		deskribapena = deskr;
+		id = idF;
+		primaryPhotoID = ppID;
 	}
 	
 	
@@ -29,7 +39,7 @@ public class Album {
 			id = p.getId();
 			AlbumakKud albkud = AlbumakKud.getInstantzia();
 			String username = Nagusia.getInstantzia().getProperty("username");
-			albkud.albumaSartu(id, izena, deskribapena, username);
+			albkud.albumaSartu(id, izena, deskribapena,photoID, username);
 			albkud.albumeraGehitu(md5, id, username);
 		} catch (FlickrException e) {
 			// TODO Auto-generated catch block
@@ -87,6 +97,16 @@ public class Album {
 	public String inprimatu() {
 		// TODO Auto-generated method stub
 		return "ID: "+id+"  Izena: "+izena;
+	}
+
+
+	public boolean hauDa(String id2) {
+		return id2.equals(id);
+	}
+
+
+	public boolean primaryPhoto(String flickrID) {
+		return flickrID.equals(primaryPhotoID);
 	}
 	
 }

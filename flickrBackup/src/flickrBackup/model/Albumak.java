@@ -12,7 +12,7 @@ import flickrBackup.kudeatzaileak.AlbumakKud;
 
 public class Albumak {
 	
-	private ListaAlbum lista =null; 
+	private ListaAlbum lista =null;
 	private static Albumak albumak;
 	
 	private Albumak(){
@@ -43,7 +43,8 @@ public class Albumak {
 					Photoset pset = pi.getInfo(id);
 					String izen = pset.getTitle();
 					String deskr =pset.getDescription();
-					alkud.albumaSartu(pset.getId(), izen, deskr, Nagusia.getInstantzia().getProperty("username"));
+					String ppID = pset.getPrimaryPhoto().getId();
+					alkud.albumaSartu(pset.getId(), izen, deskr, ppID, Nagusia.getInstantzia().getProperty("username"));
 				}
 			}
 		} catch (FlickrException e) {
@@ -70,5 +71,13 @@ public class Albumak {
 	
 	public Album getAlbum(int index){
 		return this.lista.getAlbum(index);
+	}
+	
+	public Album bilatu(String id){
+		return lista.bilatu(id);
+	}
+
+	public boolean ppDa(String flickrID) {
+		return lista.ppDa(flickrID);
 	}
 }

@@ -20,9 +20,9 @@ public class AlbumakKud {
 		// Singleton patroia
 	}
 	
-	public void albumaSartu(String id, String tit, String deskr, String username){
+	public void albumaSartu(String id, String tit, String deskr, String ppID, String username){
 		DBKudeatzaile dbkud = DBKudeatzaile.getInstantzia();
-		dbkud.execSQL(String.format("INSERT INTO Album VALUES ('%s','%s','%s','%s')", id,tit,deskr,username));
+		dbkud.execSQL(String.format("INSERT INTO Album VALUES ('%s','%s','%s','%s','%s')", id,tit,deskr,ppID,username));
 	}
 
 	public boolean DBandago(String id,String username) {
@@ -51,7 +51,7 @@ public class AlbumakKud {
 
 	public void albumeraGehitu(String md5, String id,String username) {
 		DBKudeatzaile dbkud = DBKudeatzaile.getInstantzia();
-		dbkud.execSQL(String.format("INSERT INTO Izan VALUES('%s','%s','%s'",id,md5,username));
+		dbkud.execSQL(String.format("INSERT INTO Izan VALUES('%s','%s','%s')",id,md5,username));
 	}
 
 	public ArrayList<Album> albumakLortuDB(String username) {
@@ -60,7 +60,7 @@ public class AlbumakKud {
 		ResultSet rs = dbkud.execSQL(String.format("SELECT * FROM Album WHERE username='%s'",username));
 		try {
 			while (rs.next()){
-				Album al = new Album(rs.getString("titulua"),rs.getString("deskribapena"),rs.getString("id"));
+				Album al = new Album(rs.getString("titulua"),rs.getString("deskribapena"),rs.getString("id"),rs.getString("primaryPhotoID"));
 				alalbum.add(al);
 			}
 			return alalbum;

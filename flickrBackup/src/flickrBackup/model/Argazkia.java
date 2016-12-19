@@ -62,6 +62,10 @@ public class Argazkia {
 			flickrID = (String)info[3];
 			etiketak = (List<String>) info[4];
 			etiketak.remove(id);
+			for(String id:(List<String>)info[5]){
+				albumak.add(Albumak.getInstantzia().bilatu(id));
+			}
+			
 		}
 	}
 		
@@ -297,17 +301,19 @@ public class Argazkia {
 			igo1();
 		}
 		else{
-			if(Nagusia.berridatzi==null){
-				boolean igo = NagusiaUI.getNagusiaUI().argazkiaDagoIgo();
-				if (igo){
-					ezabatu();
-					igo1();
+			if(!Albumak.getInstantzia().ppDa(flickrID)){
+				if(Nagusia.berridatzi==null){
+					boolean igo = NagusiaUI.getNagusiaUI().argazkiaDagoIgo();
+					if (igo){
+						ezabatu();
+						igo1();
+					}
 				}
-			}
-			else{
-				if(Nagusia.berridatzi){
-					ezabatu();
-					igo1();
+				else{
+					if(Nagusia.berridatzi){
+						ezabatu();
+						igo1();
+					}
 				}
 			}
 		}

@@ -24,15 +24,23 @@ public class ArgazkiakKud {
 	public Object[] getArgazkia(String id, String username){
 		DBKudeatzaile dbkud = DBKudeatzaile.getInstantzia();
 		ResultSet rs = dbkud.execSQL(String.format("select izena,deskribapena,pribatutasuna,flickrID from argazkia WHERE md5='%s' AND username='%s'",id,username));
-		
+		ResultSet albrs = dbkud.execSQL(String.format("Select idAlbum From Izan Where md5='%s' AND username='%s'", id,username));
 		try {
 			rs.next();
-			Object[] res = new Object[5];
+			Object[] res = new Object[6];
 			res[0] = rs.getString("izena");
 			res[1] = rs.getString("deskribapena");
 			res[2] = rs.getString("pribatutasuna");
 			res[3] = rs.getString("flickrID");
 			res[4] = getEtiketak(id,username);
+			ArrayList<String> albums = new ArrayList<String>();
+			while(albrs.next()){
+				albums.add(albrs.getString("idAlbum"));
+			}
+			if(albums.isEmpty()){
+				albums = null;
+			}
+			res[5] = albums;
 			return res;
 			
 		} catch (SQLException e) {

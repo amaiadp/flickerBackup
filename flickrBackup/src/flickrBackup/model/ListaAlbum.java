@@ -57,4 +57,22 @@ public class ListaAlbum {
 		this.lista.remove(al);
 	}
 
+	public Album bilatu(String id) {
+		for(Album al:lista){
+			if(al.hauDa(id)){
+				return al;
+			}
+		}
+		return null;
+	}
+
+	public boolean ppDa(String flickrID) {
+		for(Album al:lista){
+			if(al.primaryPhoto(flickrID)){
+				return true;
+			}
+		}
+		return false;
+	}
+
 }
