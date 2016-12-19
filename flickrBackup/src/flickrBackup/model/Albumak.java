@@ -58,8 +58,8 @@ public class Albumak {
 		}
 	}
 	
-	public String getAlbum(int i){
-		return lista.get(i);
+	public String getAlbumInfo(int i){
+		return lista.getAlbumInfo(i);
 	}
 	
 	public int luzeera(){
@@ -71,5 +71,9 @@ public class Albumak {
 			albumak = new Albumak();
 		}
 		return albumak;
+	}
+	
+	public Album getAlbum(int index){
+		return this.lista.getAlbum(index);
 	}
 }
