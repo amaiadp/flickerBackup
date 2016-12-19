@@ -84,14 +84,13 @@ public class Nagusia {
 	private void flickrSortu(){
 		InputStream in = null;
 		try {
-			in = getClass().getResourceAsStream("/setup.properties");
+			in = new FileInputStream("src/setup.properties");
 			properties = new Properties();
-			try {
-				properties.load(in);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			properties.load(in);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			
 		} finally {
 			IOUtilities.close(in);
 		}

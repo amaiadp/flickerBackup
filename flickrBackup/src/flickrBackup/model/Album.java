@@ -74,6 +74,12 @@ public class Album {
 		AlbumakKud albkud = AlbumakKud.getInstantzia();
 		return albkud.badago(md5,id,Nagusia.getInstantzia().getProperty("username"));
 	}
+
+
+	public String inprimatu() {
+		// TODO Auto-generated method stub
+		return "ID: "+id+"  Izena: "+izena;
+	}
 	
 //	public static void main(String[] args) {
 //		String pid1 = "31136300990";

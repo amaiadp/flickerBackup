@@ -45,17 +45,48 @@ public class Argazkia {
 	
 	public Argazkia(File f){
 		id = md5Lortu(f);
-		izena = f.getName();
-		path = f;
-		etiketak = new ArrayList<String>();
-		etiketak.add(id);
+		ArgazkiakKud argkud = ArgazkiakKud.getInstantzia();
 		thumbnail = thumbnailLortu(f);
-		flickrID = null;
+		etiketak = new ArrayList<String>();
+		path = f;
+		if(!argkud.badago(id, Nagusia.getInstantzia().getProperty("username"))){
+			izena = f.getName();
+			deskribapena = null;
+			etiketak.add(id);
+			flickrID = null;
+		}
+		else{
+			String[] info = argkud.getArgazkia(id,Nagusia.getInstantzia().getProperty("username"));
+			izena = info[0];
+			deskribapena = info[1];
+			setPrib(info[2]);
+		}
+	}
 		
-		System.out.println(f);
-		System.out.println(id);
-		System.out.println(izena);
-		System.out.println(etiketak.get(0));	
+	public void setPrib(String s){
+		if(s.equals(Pribatutasuna.PRIVACY_LEVEL_FAMILY.toString())){
+			prib = Pribatutasuna.PRIVACY_LEVEL_FAMILY;
+		}
+		else{
+			if(s.equals(Pribatutasuna.PRIVACY_LEVEL_FRIENDS.toString())){
+				prib = Pribatutasuna.PRIVACY_LEVEL_FRIENDS;
+			}
+			else{
+				if(s.equals(Pribatutasuna.PRIVACY_LEVEL_FRIENDS_FAMILY.toString())){
+					prib = Pribatutasuna.PRIVACY_LEVEL_FRIENDS_FAMILY;
+				}
+				else{
+					if(s.equals(Pribatutasuna.PRIVACY_LEVEL_PRIVATE.toString())){
+						prib = Pribatutasuna.PRIVACY_LEVEL_PRIVATE;
+					}
+					else{
+						if(s.equals(Pribatutasuna.PRIVACY_LEVEL_PUBLIC.toString())){
+							prib = Pribatutasuna.PRIVACY_LEVEL_PUBLIC;
+						}
+					}
+				}
+			}
+		}
 	}
 	
 	public Argazkia(String izen, String deskr, List<String> etik, ImageIcon thumb, String iD){
@@ -305,13 +336,18 @@ public class Argazkia {
 			erantzuna = etiketak;
 			break;
 		case 4:
-			erantzuna = null;
+			if (albumak!=null){
+				erantzuna = albumak.inprimatu();
+			}
+			else{
+				erantzuna = null;
+			}
 			break;
 		case 5:
 			erantzuna = prib;
 			break;
 		case 6:
-			erantzuna = null;
+			erantzuna = (flickrID!=null);
 			break;
 		default:
 			break;

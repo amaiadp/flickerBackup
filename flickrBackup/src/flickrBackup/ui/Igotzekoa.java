@@ -3,6 +3,9 @@ package flickrBackup.ui;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Container;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Label;
@@ -31,6 +34,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
 import flickrBackup.model.Argazkia;
+import flickrBackup.model.Albumak;
 import flickrBackup.model.Argazkia.Pribatutasuna;
 import flickrBackup.model.Nagusia;
 
@@ -140,6 +144,19 @@ public class Igotzekoa extends JPanel {
 			pribCB.addItem(elem);
 		}
 		pribCB.setSelectedItem(null);
+		JLabel albumL = new JLabel("Albumak");
+		JPanel albumJP = new JPanel();
+		albumJP.setLayout(new BoxLayout(albumJP,BoxLayout.Y_AXIS));
+		Albumak albs = Albumak.getInstantzia();
+		int i=albs.luzeera()-1;
+		
+		aldaketaJP.add(albumL);
+		while(i>=0){
+			System.out.println(albs.getAlbum(i));
+			albumJP.add(new JCheckBox(albs.getAlbum(i)));
+			i--;
+		}
+		aldaketaJP.add(albumJP);
 
 		aldaketaJP.add(deskL);
 		aldaketaJP.add(deskT);

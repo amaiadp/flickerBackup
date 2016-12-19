@@ -21,23 +21,22 @@ public class ArgazkiakKud {
 	}
 
 	
-	public List<String[]> getArgazkia(String id){
-		
+	public String[] getArgazkia(String id, String username){
 		DBKudeatzaile dbkud = DBKudeatzaile.getInstantzia();
-		ResultSet rs = dbkud.execSQL("select xxxxxx from argazkia");
-		List<String[]> emaitza = new ArrayList<String[]>();
+		ResultSet rs = dbkud.execSQL(String.format("select izena,deskribapena,pribatutasuna from argazkia WHERE md5='%s' AND username='%s'",id,username));
+		
 		try {
-			while(rs.next()){
-				String[] res = new String[3];
-				res[0] = rs.getString("userid");
-				res[1] = rs.getString("key");
-				res[2] = rs.getString("value");
-				emaitza.add(res);
-			}
+			rs.next();
+			String[] res = new String[3];
+			res[0] = rs.getString("izena");
+			res[1] = rs.getString("deskribapena");
+			res[2] = rs.getString("pribatutasuna");
+			return res;
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
+			return null;
 		}
-		return emaitza;
 	}
 
 	public List<Object[]> argazkiakLortu(String username) {
@@ -84,6 +83,18 @@ public class ArgazkiakKud {
 		dbkud.execSQL(String.format("DELETE FROM argazkia WHERE md5='%s' AND username='%s'", md5,username));
 		for(String etiketa:etiketak){
 			dbkud.execSQL(String.format("DELETE FROM Etiketak WHERE md5='%s' AND etiketa='%s' AND username='%s'", md5,etiketa,username));
+		}
+	}
+	
+	public boolean badago(String md5, String username){
+		DBKudeatzaile dbkud = DBKudeatzaile.getInstantzia();
+		ResultSet rs = dbkud.execSQL(String.format("SELECT * FROM argazkia WHERE md5='%s' AND username='%s'",md5,username));
+		try {
+			rs.next();
+			rs.getString("md5");
+			return true;
+		} catch (SQLException e) {
+			return false;
 		}
 	}
 	
