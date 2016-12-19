@@ -109,4 +109,9 @@ public class Album {
 		return flickrID.equals(primaryPhotoID);
 	}
 	
+	public String inprimatuIzen() {
+		// TODO Auto-generated method stub
+		return id.substring(id.length()-5)+": "+izena;
+	}
+	
 }

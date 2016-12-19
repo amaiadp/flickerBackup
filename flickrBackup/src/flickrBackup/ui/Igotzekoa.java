@@ -33,6 +33,7 @@ import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
+import javax.swing.border.EmptyBorder;
 
 import flickrBackup.model.Argazkia;
 import flickrBackup.model.Album;
@@ -125,7 +126,7 @@ public class Igotzekoa extends JPanel {
 		JPanel behekoJP = new JPanel(new BorderLayout());
 		
 		
-		JPanel aldaketaJP = new JPanel(new FlowLayout());
+		JPanel aldaketaJP = new JPanel(new WrapLayout());
 		aldaketaSP = new JScrollPane(aldaketaJP);
 		
 		JLabel deskL = new JLabel("Deskribapena");
@@ -228,6 +229,7 @@ public class Igotzekoa extends JPanel {
 						jd.setTitle("Album sortu");
 						jd.setModal(true);
 						JPanel jp = new JPanel(new BorderLayout());
+						jp.setBorder(new EmptyBorder(10, 10, 10, 10));
 						JPanel erdikoJp = new JPanel(new GridLayout(2,2));
 						jp.add(erdikoJp, BorderLayout.CENTER);
 						JButton ok = new JButton("OK");
@@ -263,6 +265,7 @@ public class Igotzekoa extends JPanel {
 									});
 									albumJP.repaint();
 						            JOptionPane.showMessageDialog(null, "Albuma sortu da.", "Album", JOptionPane.INFORMATION_MESSAGE);
+						            jd.dispose();
 
 								}else{
 						            JOptionPane.showMessageDialog(null, "Sartu izen bat.", "Errorea", JOptionPane.ERROR_MESSAGE);
@@ -275,8 +278,11 @@ public class Igotzekoa extends JPanel {
 						jd.pack();
 						jd.setVisible(true);
 
+
+						model.fireTableStructureChanged();
+					}else{
+			            JOptionPane.showMessageDialog(null, "Aukeratu igota dagoen argazki bat.", "Errorea", JOptionPane.ERROR_MESSAGE);
 					}
-					model.fireTableStructureChanged();
 				}
 				else{
 		            JOptionPane.showMessageDialog(null, "Aukeratu igota dagoen argazki bat.", "Errorea", JOptionPane.ERROR_MESSAGE);

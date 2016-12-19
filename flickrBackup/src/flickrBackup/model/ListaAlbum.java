@@ -40,10 +40,11 @@ public class ListaAlbum {
 		Album al1 = null;
 		if (!lista.isEmpty()){
 			al1 =lista.get(0);
+			emaitza = emaitza + al1.inprimatuIzen();
 		}
 		for(Album al:lista){
 			if (!al.equals(al1)){
-				emaitza = emaitza +", "+ al.inprimatu();
+				emaitza = emaitza +", "+ al.inprimatuIzen();
 			}
 		}
 		return emaitza;
