@@ -18,6 +18,7 @@ import com.flickr4java.flickr.uploader.UploadMetaData;
 import com.flickr4java.flickr.uploader.Uploader;
 
 import flickrBackup.kudeatzaileak.ArgazkiakKud;
+import flickrBackup.ui.NagusiaUI;
 
 import com.flickr4java.flickr.photos.Photo;
 import com.flickr4java.flickr.photos.PhotosInterface;
@@ -276,8 +277,11 @@ public class Argazkia {
 		}
 		else{
 			if(Nagusia.berridatzi==null){
-				//llamada al JDialog
-				
+				boolean igo = NagusiaUI.getNagusiaUI().argazkiaDagoIgo();
+				if (igo){
+					ezabatu();
+					igo1();
+				}
 			}
 			else{
 				if(Nagusia.berridatzi){
