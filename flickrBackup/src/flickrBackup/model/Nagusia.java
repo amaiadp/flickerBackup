@@ -68,21 +68,7 @@ public class Nagusia {
 	        }
 	    };
 	
-	private Nagusia() throws IOException{
-	}
-
-	public static Nagusia getInstantzia(){
-		if (instantzia==null){
-			try {
-				instantzia = new Nagusia();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-		return instantzia;
-	}
-	
-	private void flickrSortu(){
+	private Nagusia(){
 		InputStream in = null;
 		try {
 			in = new FileInputStream("setup.properties");
@@ -95,6 +81,17 @@ public class Nagusia {
 		} finally {
 			IOUtilities.close(in);
 		}
+	}
+
+	public static Nagusia getInstantzia(){
+		if (instantzia==null){
+			instantzia = new Nagusia();
+		}
+		return instantzia;
+	}
+	
+	private void flickrSortu(){
+		
 		f = new Flickr(properties.getProperty("apiKey"), properties.getProperty("secret"), new REST());
 		requestContext = RequestContext.getRequestContext();
 		Auth auth = new Auth();
