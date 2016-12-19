@@ -51,7 +51,7 @@ public class Argazkia {
 		albumak = new ListaAlbum();
 		if(!argkud.badago(id, Nagusia.getInstantzia().getProperty("username"))){
 			izena = f.getName();
-			deskribapena = null;
+			deskribapena = "";
 			etiketak.add(id);
 			flickrID = null;
 		}
@@ -264,7 +264,6 @@ public class Argazkia {
 	private void igo1(){
 		Uploader up = Nagusia.getInstantzia().getUploader();
 		UploadMetaData md = new UploadMetaData();
-		etiketak.add(id);
 		md.setTags(etiketak);
 		md.setDescription(deskribapena);
 		md.setTitle(izena);

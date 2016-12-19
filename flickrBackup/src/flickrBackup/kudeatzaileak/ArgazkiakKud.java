@@ -86,10 +86,24 @@ public class ArgazkiakKud {
 	public void etiketakSartu(String md5, List<String> etiketak, String username){
 		DBKudeatzaile dbkud = DBKudeatzaile.getInstantzia();
 		for(String etiketa: etiketak){
-			dbkud.execSQL(String.format("INSERT INTO etiketak (md5,etiketa,username) VALUES('%s','%s','%s')", md5,etiketa,username));
+			if(!badago(md5,etiketa,username)){
+				dbkud.execSQL(String.format("INSERT INTO Etiketak (md5,etiketa,username) VALUES('%s','%s','%s')", md5,etiketa,username));
+			}
 		}
 	}
 
+	private boolean badago(String md5, String etiketa, String username){
+		DBKudeatzaile dbkud = DBKudeatzaile.getInstantzia();
+		ResultSet rs = dbkud.execSQL(String.format("SELECT * FROM Etiketak WHERE md5='%s' AND etiketa='%s' AND username='%s'",md5,etiketa,username));
+		try {
+			rs.next();
+			rs.getString("md5");
+			return true;
+		} catch (SQLException e) {
+			return false;
+		}
+	}
+	
 	public void argazkiaEzabatu(String md5, String username, List<String> etiketak) {
 		DBKudeatzaile dbkud = DBKudeatzaile.getInstantzia();
 		dbkud.execSQL(String.format("DELETE FROM argazkia WHERE md5='%s' AND username='%s'", md5,username));
