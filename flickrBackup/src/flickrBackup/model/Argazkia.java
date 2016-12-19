@@ -248,7 +248,7 @@ public class Argazkia {
 	
 	
 	private void ezabatu(){
-		PhotosInterface pi = Nagusia.getInstantzia().getPhotosInterface();
+		PhotosInterface pi = Nagusia.getInstantzia().getFlickr().getPhotosInterface();
 		try {
 			ArgazkiakKud argkud = ArgazkiakKud.getInstantzia();
 			argkud.argazkiaEzabatu(id,Nagusia.getInstantzia().getProperty("username"),etiketak);

@@ -116,13 +116,6 @@ public class Nagusia {
 		return f;
 	}
 	
-	public PhotosInterface getPhotosInterface(){
-		if(f==null){
-			flickrSortu();
-		}
-		return f.getPhotosInterface();
-	}
-	
 	public String getProperty(String key){
 		return (properties.getProperty(key));
 	}
