@@ -52,7 +52,7 @@ public class Nagusia {
 
 
 	static final String[] EXTENSIONS = new String[]{
-	        "jpeg", "jpg", "gif", "png", "bmp"// and other formats you need
+	         "jpg", "gif", "png", "bmp"// and other formats you need
 	};
 	
 	public static final FilenameFilter IMAGE_FILTER = new FilenameFilter() {

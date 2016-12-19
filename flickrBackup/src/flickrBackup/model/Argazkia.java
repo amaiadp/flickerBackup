@@ -30,12 +30,12 @@ public class Argazkia {
 	private List<String> etiketak;
 	private ImageIcon thumbnail;
 	private String flickrID;
-	private Pribatutasuna prib = Pribatutasuna.PRIVACY_LEVEL_NO_FILTER;
+	private Pribatutasuna prib = Pribatutasuna.PRIVACY_LEVEL_PUBLIC;
 	private ListaAlbum albumak;
 	
 	
 	public static enum Pribatutasuna{
-		PRIVACY_LEVEL_NO_FILTER, PRIVACY_LEVEL_PUBLIC, PRIVACY_LEVEL_FRIENDS, PRIVACY_LEVEL_FAMILY, PRIVACY_LEVEL_FRIENDS_FAMILY, PRIVACY_LEVEL_PRIVATE
+		PRIVACY_LEVEL_PUBLIC, PRIVACY_LEVEL_FRIENDS, PRIVACY_LEVEL_FAMILY, PRIVACY_LEVEL_FRIENDS_FAMILY, PRIVACY_LEVEL_PRIVATE
 	}
 	
 	public void setPrib(Pribatutasuna pri){
@@ -52,7 +52,6 @@ public class Argazkia {
 		if(!argkud.badago(id, Nagusia.getInstantzia().getProperty("username"))){
 			izena = f.getName();
 			deskribapena = "";
-			etiketak.add(id);
 			flickrID = null;
 		}
 		else{
@@ -62,6 +61,7 @@ public class Argazkia {
 			setPrib((String)info[2]);
 			flickrID = (String)info[3];
 			etiketak = (List<String>) info[4];
+			etiketak.remove(id);
 		}
 	}
 		
@@ -250,20 +250,21 @@ public class Argazkia {
 	private void ezabatu(){
 		PhotosInterface pi = Nagusia.getInstantzia().getPhotosInterface();
 		try {
-			pi.delete(flickrID);
 			ArgazkiakKud argkud = ArgazkiakKud.getInstantzia();
 			argkud.argazkiaEzabatu(id,Nagusia.getInstantzia().getProperty("username"),etiketak);
-			flickrID = null;
+			pi.delete(flickrID);
 			
 		} catch (FlickrException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		flickrID = null;
 	}
 	
 	private void igo1(){
 		Uploader up = Nagusia.getInstantzia().getUploader();
 		UploadMetaData md = new UploadMetaData();
+		etiketak.add(id);
 		md.setTags(etiketak);
 		md.setDescription(deskribapena);
 		md.setTitle(izena);

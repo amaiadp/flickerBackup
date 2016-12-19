@@ -93,6 +93,7 @@ public class Igotzekoa extends JPanel {
 						 Argazkia a = model.getArgazkia(index);
 						 a.igo();
 					}
+					model.fireTableStructureChanged();
 				}
 				else{
 					JOptionPane.showMessageDialog(null,"Ez dago argazkirik hautatuta");
