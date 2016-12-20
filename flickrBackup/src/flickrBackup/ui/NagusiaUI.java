@@ -46,6 +46,7 @@ public class NagusiaUI extends JFrame {
 	
 	public void bistaratu() {
 		this.pack();
+		nagusiaUI.setLocationRelativeTo(null);
 		setVisible(true);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 	}

@@ -289,6 +289,7 @@ public class Igotzekoa extends JPanel {
 						
 						jd.getContentPane().add(jp, BorderLayout.CENTER);
 						jd.pack();
+						jd.setLocationRelativeTo(null);
 						jd.setVisible(true);
 
 

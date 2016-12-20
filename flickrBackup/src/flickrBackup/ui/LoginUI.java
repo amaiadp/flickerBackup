@@ -63,11 +63,12 @@ public class LoginUI extends JFrame{
 		//getContentPane().add(jp);
 
 		this.add(jp, BorderLayout.CENTER);
-		this.setVisible(true);
 		jp.add(eraL);
 		jp.add(eraT);
 		jp.add(sartu);
 		this.pack();
+		this.setLocationRelativeTo(null);
+		this.setVisible(true);
 		sartu.addActionListener(new ActionListener() {
 			
 			@Override
@@ -133,6 +134,7 @@ public class LoginUI extends JFrame{
 		});
 		this.setContentPane(nagusi);
 		this.pack();
+		this.setLocationRelativeTo(null);
 		this.setVisible(true);
 		
 	}
@@ -216,6 +218,7 @@ public class LoginUI extends JFrame{
 		
 		this.setContentPane(nagusi);
 		this.pack();
+		this.setLocationRelativeTo(null);
 		this.setVisible(true);
 	}
 
@@ -274,6 +277,7 @@ public class LoginUI extends JFrame{
 		
 		this.setContentPane(nagusi);
 		this.pack();
+		this.setLocationRelativeTo(null);
 		this.setVisible(true);
 	}
 	
@@ -316,6 +320,7 @@ public class LoginUI extends JFrame{
 		
 		this.setContentPane(nagusi);
 		this.pack();
+		this.setLocationRelativeTo(null);
 		this.setVisible(true);				
 	}
 
