@@ -120,10 +120,10 @@ public class Igotzekoa extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				Nagusia.getInstantzia().ezabatuPropertiesFitxategia();
-				((JFrame) SwingUtilities.getWindowAncestor(Igotzekoa.this)).dispose();
-				NagusiaUI.getNagusiaUI().amaitu();
-				new LoginUI();
-				
+//				((JFrame) SwingUtilities.getWindowAncestor(Igotzekoa.this)).dispose();
+//				NagusiaUI.getNagusiaUI().amaitu();
+//				new LoginUI();
+				System.exit(0);
 			}
 		});
 		
