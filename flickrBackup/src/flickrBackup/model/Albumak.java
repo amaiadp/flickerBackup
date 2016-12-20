@@ -83,4 +83,8 @@ public class Albumak {
 	public boolean ppDa(String flickrID) {
 		return lista.ppDa(flickrID);
 	}
+
+	public void gehituAlbum(Album al) {
+		lista.add(al);
+	}
 }

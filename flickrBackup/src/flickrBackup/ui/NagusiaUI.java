@@ -106,4 +106,9 @@ public class NagusiaUI extends JFrame {
 	
 	}
 
+	public void amaitu() {
+		nagusiaUI = new NagusiaUI();
+		
+	}
+
 }

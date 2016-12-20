@@ -99,6 +99,7 @@ public class Igotzekoa extends JPanel {
 						 Argazkia a = model.getArgazkia(index);
 						 a.igo();
 					}
+		            JOptionPane.showMessageDialog(null, "Argazkiak igota.", "Igota", JOptionPane.INFORMATION_MESSAGE);
 					model.fireTableStructureChanged();
 				}
 				else{
@@ -119,6 +120,7 @@ public class Igotzekoa extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				Nagusia.getInstantzia().ezabatuPropertiesFitxategia();
 				((JFrame) SwingUtilities.getWindowAncestor(Igotzekoa.this)).dispose();
+				NagusiaUI.getNagusiaUI().amaitu();
 				new LoginUI();
 				
 			}
@@ -249,6 +251,7 @@ public class Igotzekoa extends JPanel {
 							public void actionPerformed(ActionEvent arg0) {
 								if(!izenaT.getText().equals("") && izenaT.getText().split("\\s*").length>0){
 									Album al = new Album(izenaT.getText(), deskT.getText(), null);
+									Albumak.getInstantzia().gehituAlbum(al);
 									Argazkia ar = model.getArgazkia(taula.getSelectedRow());
 									ar.gehituAlbum(al);
 									try {
