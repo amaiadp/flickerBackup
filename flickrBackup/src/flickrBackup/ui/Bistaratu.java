@@ -25,7 +25,8 @@ public class Bistaratu extends JPanel{
 				bis.remove(bistaratu);
 				bis.add(al);
 				bis.revalidate();
-				((JFrame) SwingUtilities.getWindowAncestor(bis)).pack();;
+				((JFrame) SwingUtilities.getWindowAncestor(bis)).pack();
+				((JFrame) SwingUtilities.getWindowAncestor(bis)).setLocationRelativeTo(null);
 				bis.setVisible(true);
 			}
 		});
