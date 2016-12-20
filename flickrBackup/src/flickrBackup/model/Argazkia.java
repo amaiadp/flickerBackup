@@ -325,6 +325,7 @@ public class Argazkia {
 				flickrID = (String)info[3];
 				etiketak = (List<String>) info[4];
 				etiketak.remove(id);
+				albumak = new ListaAlbum();
 				for(String id:(List<String>)info[5]){
 					albumak.add(Albumak.getInstantzia().bilatu(id));
 				}
