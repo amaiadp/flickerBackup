@@ -368,7 +368,12 @@ public class Argazkia {
 			deskribapena = (String) value;
 			break;
 		case 3:
-			etiketak = (List<String>) value;
+			List<String> lista = (List<String>) value;
+			for (String string : lista) {
+				if (!etiketak.contains(string)){
+					etiketak.add(string);
+				}
+			}
 			break;
 //		case 4:
 //			erantzuna = null;
