@@ -307,34 +307,40 @@ public class Argazkia {
 					if (igo){
 						ezabatu();
 						igo1();
+					}else{
+						this.argazkiaMantenduAldatuDatu();
 					}
 				}
 				else{
 					if(Nagusia.berridatzi){
 						ezabatu();
 						igo1();
+					}else{
+						this.argazkiaMantenduAldatuDatu();
 					}
 				}
 			}
 			else{
 				NagusiaUI.getNagusiaUI().mezuaErakutsi(izena+" argazkia album baten primary photo-a da. Ezin da berriro igo.");
-				ArgazkiakKud argkud = ArgazkiakKud.getInstantzia();
-				Object[] info = argkud.getArgazkia(id,Nagusia.getInstantzia().getProperty("username"));
-				izena = (String) info[0];
-				deskribapena = (String)info[1];
-				setPrib((String)info[2]);
-				flickrID = (String)info[3];
-				etiketak = (List<String>) info[4];
-				etiketak.remove(id);
-				albumak = new ListaAlbum();
-				for(String id:(List<String>)info[5]){
-					albumak.add(Albumak.getInstantzia().bilatu(id));
-				}
+				this.argazkiaMantenduAldatuDatu();
 			}
 		}
 	}
 	
-	
+	private void argazkiaMantenduAldatuDatu(){
+		ArgazkiakKud argkud = ArgazkiakKud.getInstantzia();
+		Object[] info = argkud.getArgazkia(id,Nagusia.getInstantzia().getProperty("username"));
+		izena = (String) info[0];
+		deskribapena = (String)info[1];
+		setPrib((String)info[2]);
+		flickrID = (String)info[3];
+		etiketak = (List<String>) info[4];
+		etiketak.remove(id);
+		albumak = new ListaAlbum();
+		for(String id:(List<String>)info[5]){
+			albumak.add(Albumak.getInstantzia().bilatu(id));
+		}
+	}
 	public Object getBalioa(int i){
 		Object erantzuna = null;
 		switch (i) {
@@ -348,6 +354,7 @@ public class Argazkia {
 			erantzuna = deskribapena;
 			break;
 		case 3:
+			etiketak.remove(id);
 			erantzuna = etiketak;
 			break;
 		case 4:
@@ -384,6 +391,7 @@ public class Argazkia {
 			break;
 		case 3:
 			List<String> lista = (List<String>) value;
+			etiketak = new ArrayList<String>();
 			for (String string : lista) {
 				if (!etiketak.contains(string)){
 					etiketak.add(string);
