@@ -317,6 +317,7 @@ public class Argazkia {
 				}
 			}
 			else{
+				NagusiaUI.getNagusiaUI().mezuaErakutsi(izena+" argazkia album baten primary photo-a da. Ezin da berriro igo.");
 				ArgazkiakKud argkud = ArgazkiakKud.getInstantzia();
 				Object[] info = argkud.getArgazkia(id,Nagusia.getInstantzia().getProperty("username"));
 				izena = (String) info[0];

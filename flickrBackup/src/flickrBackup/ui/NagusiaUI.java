@@ -10,6 +10,7 @@ import javax.swing.JCheckBox;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
@@ -109,6 +110,10 @@ public class NagusiaUI extends JFrame {
 	public void amaitu() {
 		nagusiaUI = new NagusiaUI();
 		
+	}
+
+	public void mezuaErakutsi(String mezua) {
+		JOptionPane.showMessageDialog(null, mezua, "Argazkia ezin da igon", JOptionPane.INFORMATION_MESSAGE);
 	}
 
 }
