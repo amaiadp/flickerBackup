@@ -113,6 +113,7 @@ public class ArgazkiakKud {
 		DBKudeatzaile dbkud = DBKudeatzaile.getInstantzia();
 		dbkud.execSQL(String.format("DELETE FROM argazkia WHERE md5='%s' AND username='%s'", md5,username));
 		dbkud.execSQL(String.format("DELETE FROM Etiketak WHERE md5='%s' AND username='%s'", md5,username));
+		dbkud.execSQL(String.format("DELETE FROM Izan WHERE md5='%s' AND username='%s'", md5,username));
 	}
 	
 	public boolean badago(String md5, String username){

@@ -36,6 +36,7 @@ public class Album {
 	public void albumaSortu(String md5, String photoID) throws FlickrException{
 			Photoset p = pi.create(izena, deskribapena, photoID);
 			id = p.getId();
+			primaryPhotoID = photoID;
 			AlbumakKud albkud = AlbumakKud.getInstantzia();
 			String username = Nagusia.getInstantzia().getProperty("username");
 			albkud.albumaSartu(id, izena, deskribapena,photoID, username);

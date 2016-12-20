@@ -316,6 +316,19 @@ public class Argazkia {
 					}
 				}
 			}
+			else{
+				ArgazkiakKud argkud = ArgazkiakKud.getInstantzia();
+				Object[] info = argkud.getArgazkia(id,Nagusia.getInstantzia().getProperty("username"));
+				izena = (String) info[0];
+				deskribapena = (String)info[1];
+				setPrib((String)info[2]);
+				flickrID = (String)info[3];
+				etiketak = (List<String>) info[4];
+				etiketak.remove(id);
+				for(String id:(List<String>)info[5]){
+					albumak.add(Albumak.getInstantzia().bilatu(id));
+				}
+			}
 		}
 	}
 	
