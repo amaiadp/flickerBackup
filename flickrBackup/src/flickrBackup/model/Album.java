@@ -33,18 +33,13 @@ public class Album {
 	}
 	
 	
-	public void albumaSortu(String md5, String photoID){
-		try {
+	public void albumaSortu(String md5, String photoID) throws FlickrException{
 			Photoset p = pi.create(izena, deskribapena, photoID);
 			id = p.getId();
 			AlbumakKud albkud = AlbumakKud.getInstantzia();
 			String username = Nagusia.getInstantzia().getProperty("username");
 			albkud.albumaSartu(id, izena, deskribapena,photoID, username);
 			albkud.albumeraGehitu(md5, id, username);
-		} catch (FlickrException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 	}
 	
 	private void albumeraGehitu(String md5,String photoID){

@@ -35,6 +35,8 @@ import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 
+import com.flickr4java.flickr.FlickrException;
+
 import flickrBackup.model.Argazkia;
 import flickrBackup.model.Album;
 import flickrBackup.model.Albumak;
@@ -249,24 +251,31 @@ public class Igotzekoa extends JPanel {
 									Album al = new Album(izenaT.getText(), deskT.getText(), null);
 									Argazkia ar = model.getArgazkia(taula.getSelectedRow());
 									ar.gehituAlbum(al);
-									al.albumaSortu(ar.getId(),ar.getFlickrID());
-									JCheckBox cb = new JCheckBox(al.inprimatu());
-									albumJP.add(cb);
-									cb.addActionListener(new ActionListener() {
-										
-										@Override
-										public void actionPerformed(ActionEvent e) {
-											if(cb.isSelected()){
-												aukeratutakoAlbumak.add(al);
-											}else{
-												aukeratutakoAlbumak.remove(al);
-											}
+									try {
+										al.albumaSortu(ar.getId(),ar.getFlickrID());
+										JCheckBox cb = new JCheckBox(al.inprimatu());
+										albumJP.add(cb);
+										cb.addActionListener(new ActionListener() {
 											
-										}
-									});
-									albumJP.revalidate();
-						            JOptionPane.showMessageDialog(null, "Albuma sortu da.", "Album", JOptionPane.INFORMATION_MESSAGE);
-						            jd.dispose();
+											@Override
+											public void actionPerformed(ActionEvent e) {
+												if(cb.isSelected()){
+													aukeratutakoAlbumak.add(al);
+												}else{
+													aukeratutakoAlbumak.remove(al);
+												}
+												
+											}
+										});
+										albumJP.revalidate();
+							            JOptionPane.showMessageDialog(null, "Albuma sortu da.", "Album", JOptionPane.INFORMATION_MESSAGE);
+							            jd.dispose();
+									} catch (FlickrException e1) {
+										// TODO Auto-generated catch block
+										e1.printStackTrace();
+										 JOptionPane.showMessageDialog(null, "Albuma ezin izan da sortu", "Errorea", JOptionPane.ERROR_MESSAGE);
+									}
+									
 
 								}else{
 						            JOptionPane.showMessageDialog(null, "Sartu izen bat.", "Errorea", JOptionPane.ERROR_MESSAGE);
