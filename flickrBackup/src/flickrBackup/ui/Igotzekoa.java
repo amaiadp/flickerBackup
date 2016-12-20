@@ -80,6 +80,7 @@ public class Igotzekoa extends JPanel {
 //						 Igotzekoa.this.pantailaratuArgazkiak();
 						 Igotzekoa.this.argazkiakLortu();
 						 ((JFrame) SwingUtilities.getWindowAncestor(Igotzekoa.this)).pack();
+						 ((JFrame) SwingUtilities.getWindowAncestor(Igotzekoa.this)).setLocationRelativeTo(null);
 			      } 
 
 			}
@@ -233,7 +234,7 @@ public class Igotzekoa extends JPanel {
 						jd.setTitle("Album sortu");
 						jd.setModal(true);
 						JPanel jp = new JPanel(new BorderLayout());
-						jp.setBorder(new EmptyBorder(10, 10, 10, 10));
+						jp.setBorder(new EmptyBorder(20, 20, 20, 20));
 						JPanel erdikoJp = new JPanel(new GridLayout(2,2));
 						jp.add(erdikoJp, BorderLayout.CENTER);
 						JButton ok = new JButton("OK");

@@ -101,6 +101,7 @@ public class NagusiaUI extends JFrame {
 		
 		jd.getContentPane().add(jp, BorderLayout.CENTER);
 		jd.pack();
+		jd.setLocationRelativeTo(null);
 		jd.setVisible(true);
 	
 		
